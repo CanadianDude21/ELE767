@@ -19,13 +19,14 @@ class neurone():
 class couche():
 
 	def __init__(self):
-		self.tab_neurone #= neurone[]
+		self.tab_neurone = []
 
 class reseaux():
 
+	objets = 0
 	def __init__(self):
-		self.tab_couche ="ye"#= couche[]	
-
+		self.tab_couche = []
+		self.objets += 1
 		
 
 
