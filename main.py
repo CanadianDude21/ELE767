@@ -1,4 +1,4 @@
-import classe 
+from classe import classe as a
 
-rezzzz=reseaux()
+rezzzz=a.reseaux()
 

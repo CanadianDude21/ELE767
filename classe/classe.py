@@ -19,12 +19,12 @@ class neurone():
 class couche():
 
 	def __init__(self):
-		self.tab_neurone #= neurone[]
+		self.tab_neurone =[]
 
 class reseaux():
 
 	def __init__(self):
-		self.tab_couche ="ye"#= couche[]	
+		self.tab_couche = []	
 
 		
 
