@@ -13,8 +13,8 @@ class neurone():
 
 	def __init__(self,valeur=1):
 		self.valeur=valeur
-		self.source
-		self.destination
+		self.source=[]
+		self.destination=[]
 
 class couche():
 
