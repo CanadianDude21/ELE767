@@ -1,5 +1,9 @@
 from classe import classe as a
 
-rezzzz=a.reseaux()
-print(a.reseaux.objets)
+couches = 3
+nbNeurones = 3
+
+bestReseau = a.reseaux(couches)
+for element in bestReseau.tabCouche[]
+	print(bestReseau.tabCouche[0])
 
