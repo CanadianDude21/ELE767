@@ -1,0 +1,17 @@
+-menu
+	-apprantissage
+	- generalisation //test avec des données aléatoire
+-lire le fichier de config
+-initialisation des poids
+
+-interfacer les données avec l'entrer du systeme
+- créer le network
+- activation
+-signal d'erreur
+-correction
+-actualisation
+
+
+
+-sauvegarder les poids
+-recharger les poids
