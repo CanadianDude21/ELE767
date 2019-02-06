@@ -5,10 +5,11 @@ class classEpoque():
 		self.data=[]
 		self.rawDataLine=rawData
 
-def epoque():
+def getEpoque():
 
 	listEpoque=[]
 	line_number=0
+	tmplist=[]
 	tmpStr=""
 
 	f=open("DATA/data_test.txt","r")
@@ -18,14 +19,26 @@ def epoque():
 		index=listEpoque[line_number].rawDataLine.index(' ')
 		tmpStr=listEpoque[line_number].rawDataLine[0:index+1] #permet de recuperer le chiffre a predire
 		listEpoque[line_number].rawDataLine = listEpoque[line_number].rawDataLine[index+1:] #retire la prediction de la chaine de donner
-		listEpoque[line_number].resultat=int(tmpStr[:1])
-		print(listEpoque[line_number].rawDataLine)
-		listEpoque[line_number].data = [int(x) for x in listEpoque[line_number].rawDataLine.split(" ")] #pour ligne on extrait les données
-		line_number=line_number+1;
 
+		if tmpStr[:1]=="o":
+			listEpoque[line_number].resultat=0
+		else:
+			listEpoque[line_number].resultat=int(tmpStr[:1])
+
+		tmplist=listEpoque[line_number].rawDataLine.split(" ") #transforme la string en une list
+		tmplist.pop() # retire le dernier element de la list (\n)
+		for x in tmplist:
+				listEpoque[line_number].data.append(float(x))
+			
+		line_number=line_number+1;
+	f.close()	
 	return listEpoque
 
-
-
-
-#test = '8743-12083-15'
+def getConfig():
+	f=open("config.txt","r")
+	answer = {}
+	for line in f:
+	    k, v = line.strip().split(':')
+	    answer[k.strip()] = v.strip()
+	f.close()
+	return answer

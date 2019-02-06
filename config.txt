@@ -1,0 +1,5 @@
+nombreCoucheCache:1
+fonctionActivation:sigmoid
+nombreDeSortie:10
+neuroneEntree:1
+tauxApprentissage:0.1
