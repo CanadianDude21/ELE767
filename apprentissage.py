@@ -14,9 +14,9 @@ def creerReseau(nbCouches,nbNeurones,nbLiens):
 
 			for k in range(nbLiens):
 				if i == 0:
-					bestPoids = classe.poids(random.uniform(-0.1, 0.1))
+					bestLiens = classe.liens(random.uniform(-0.1, 0.1))
 				else:
-					bestPoids = classe.poids(random.uniform(-0.1, 0.1),k)
+					bestLiens = classe.liens(random.uniform(-0.1, 0.1),k)
 				bestReseau.tabCouche[i].tabNeurone[j].tabLiens.append(bestNeurone)
 	return bestReseau
 

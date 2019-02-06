@@ -1,5 +1,5 @@
 #import numpy as np
-class poids():
+class liens():
 
 	def __init__(self,poids,source=None):
 		self.poids = poids
