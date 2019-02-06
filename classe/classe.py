@@ -1,31 +1,28 @@
-class lien():
+#import numpy as np
+class poids():
 
-	def __init__(self):
-		self.poids
-		self.source
-		self.destination
-		self.Func
-		self.poidsMod
-
-
+	def __init__(self,poids,source=None):
+		self.poids = poids
+		self.source = source
 
 class neurone():
 
-	def __init__(self,valeur=1):
-		self.valeur=valeur
-		self.source=[]
-		self.destination=[]
+	def __init__(self, poidsNeurone, nbLiens):
+		self.poidsNeurone = poidsNeurone
+		self.tabLiens = []
+		self.nbLiens = nbLiens
 
 class couche():
 
-	def __init__(self):
-		self.tab_neurone =[]
+	def __init__(self, nbNeurones):
+		self.tabNeurone = []
+		self.nbNeurones = nbNeurones
 
 class reseaux():
 
-	def __init__(self):
-		self.tab_couche = []	
-
+	def __init__(self,nbCouches):
+		self.tabCouche = []
+		self.nbCouches = nbCouches
 		
 
 

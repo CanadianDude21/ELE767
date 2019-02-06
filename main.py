@@ -1,7 +1,11 @@
-from classe import classe as a
-from function import fetch
+from classe import classe
+import random
+import apprentissage as app
 
-rezzzz=fetch.getConfig()
+nbCouches = 3
+nbNeurones = 3
+nbLiens = 3
 
-
-print(rezzzz)
+bestReseau = app.creerReseau(nbCouches,nbNeurones,nbLiens)
+print
+print("done")
