@@ -1,7 +1,7 @@
 #import numpy as np
 class poids():
 
-	def __init__(self,poids,source):
+	def __init__(self,poids,source=None):
 		self.poids = poids
 		self.source = source
 
@@ -16,7 +16,7 @@ class couche():
 
 	def __init__(self, nbNeurones):
 		self.tabNeurone = []
-		self.tabNeurone = nbNeurones
+		self.nbNeurones = nbNeurones
 
 class reseaux():
 
