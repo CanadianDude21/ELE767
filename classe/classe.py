@@ -1,29 +1,15 @@
-#import numpy as np
-class liens():
-
-	def __init__(self,poids,source=None):
-		self.poids = poids
-		self.source = source
-
-class neurone():
-
-	def __init__(self, poidsNeurone, nbLiens):
-		self.poidsNeurone = poidsNeurone
-		self.tabLiens = []
-		self.nbLiens = nbLiens
-
-class couche():
-
-	def __init__(self, nbNeurones):
-		self.tabNeurone = []
-		self.nbNeurones = nbNeurones
+import numpy as np
+import random
 
 class reseaux():
 
-	def __init__(self,nbCouches):
-		self.tabCouche = []
-		self.nbCouches = nbCouches
-		
+	def __init__(self,config):
+
+		self.tauxApp = config["tauxApprentissage"]
+		self.lay0 = np.asarray(donnee)
+		self.lay1 = np.random.uniform(-0.1,0.1,(config["nbDonneeEntrant"], config["neuroneEntree"]))
+		self.lay2 = np.random.uniform(-0.1,0.1,(config["neuroneEntree"], config["neuroneCacher"]))
+		self.lay3 = np.random.uniform(-0.1,0.1,(config["neuroneCacher"], config["neuroneSortie"]))
 
 
 
