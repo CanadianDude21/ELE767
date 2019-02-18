@@ -1,3 +1,7 @@
+from function import FuncActivation as act
+import re
+
+
 class classEpoque():
 
 	def __init__(self,rawData):
@@ -41,4 +45,18 @@ def getConfig():
 	    k, v = line.strip().split(':')
 	    answer[k.strip()] = v.strip()
 	f.close()
+
+	for keys in answer:
+		if re.search(r'^[-+]?[0-9]+$',answer[keys]):
+			answer[keys]=int(answer[keys])
+		else:
+			if re.search(r'^[-+]?\d+\.\d+$',answer[keys]):
+				answer[keys]=float(answer[keys])
+			else:
+				if answer[keys]=="sigmoid":
+					answer[keys]=act.sigmoid
+				elif answer[keys]=="tanh":
+					answer[keys]=act.tanh
+				else:
+					print("nope")
 	return answer
