@@ -39,7 +39,7 @@ def getEpoque():
 	return listEpoque
 
 def getConfig():
-	f=open("config.txt","r")
+	f=open("config/config.txt","r")
 	answer = {}
 	for line in f:
 	    k, v = line.strip().split(':')
@@ -59,4 +59,16 @@ def getConfig():
 					answer[keys]=act.tanh
 				else:
 					print("nope")
+	return answer
+
+
+def getConfigSortie(nombre):
+	f=open("config/configSortie"+str(nombre)+".txt","r")
+	answer = []
+	for line in f:
+	    k, v = line.strip().split(':')
+	    answer.append([])
+	    for char in v:
+	    	answer[int(k)].append(int(char))
+	f.close()
 	return answer
