@@ -1,13 +1,13 @@
 import numpy as np
 
-def sigmoid(x,deriv=True):
-	if deriv==False:
-		return x*(1-x)
+def sigmoid(x,deriv=False): 
+	if deriv==False:		
+		return (1/(1+np.exp(-x))) # pas deriver
 	else:
-		return (1/(1+np.exp(-x)))
+		return x*(1-x)	#deriver
 
-def tanh(x,deriv=True):
+def tanh(x,deriv=False):
 	if deriv==False:
-		return 1.0-np.tanh(x)**2
+		return np.tanh(x) #pas deriver
 	else:
-		return np.tanh(x)
+		return 1.0-np.tanh(x)**2 #deriver
