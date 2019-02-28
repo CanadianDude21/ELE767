@@ -16,7 +16,7 @@ def getEpoque():
 	tmplist=[]
 	tmpStr=""
 
-	f=open("DATA/data_test.txt","r")
+	f=open("DATA/data_train.txt","r")
 	for text_line in f:
 		index=0
 		listEpoque.append(classEpoque(text_line))
