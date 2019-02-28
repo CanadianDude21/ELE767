@@ -36,12 +36,8 @@ class reseaux():
 		print ("activation done")
 		#Signal d'erreur (Calcul des deltas d'erreur)
 		l3_delta = (self.outputDesire - l3)*self.config["fonctionActivation"](l3,deriv=True)
-		print ("l3_delta: {}".format(l3_delta))
-		l2_error = l3_delta.dot(self.lay3.T)
-		l2_delta = l2_error	* self.config["fonctionActivation"](l2,deriv=True)
-
-		l1_error = l2_delta.dot(self.lay2.T)
-		l1_delta = l1_error	* self.config["fonctionActivation"](l1,deriv=True)
+		l2_delta = np.matmul(l3_delta,self.lay3.T)*self.config["fonctionActivation"](l2,deriv=True)
+		l1_delta = np.matmul(l2_delta,self.lay2.T)* self.config["fonctionActivation"](l1,deriv=True)
 
 		#Correction (calcul deltas des poids)
 

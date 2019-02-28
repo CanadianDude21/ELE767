@@ -1,6 +1,5 @@
 from classe import classe
 import random
-import apprentissage as app
 from function import fetch
 
 dataset = fetch.getEpoque() 
