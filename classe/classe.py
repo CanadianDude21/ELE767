@@ -24,9 +24,17 @@ class reseaux():
 		#print ("arrayPoids : {}",arrayPoids)
 		return self.config["fonctionActivation"](np.matmul(inputs,arrayPoids))
 
-	#def correction(self,inputs,deltas):
-
-	#	return np.poids = self.config["tauxApprentissage"]
+	def correction(self,inputs,deltas):
+		w_delta = np.zeros((inputs.shape[0],deltas.shape[0]))
+		i = 0
+		j = 0
+		while(i < inputs.size): 
+			j = 0
+			while(j < deltas.size):
+				w_delta[i][j] = self.config["tauxApprentissage"]*deltas[j]*inputs[i]
+				j+=1
+			i+=1
+		return w_delta 
 
 	def train(self):
 		#Activation
@@ -38,25 +46,22 @@ class reseaux():
 		l3_delta = (self.outputDesire - l3)*self.config["fonctionActivation"](l3,deriv=True)
 		l2_delta = np.matmul(l3_delta,self.lay3.T)*self.config["fonctionActivation"](l2,deriv=True)
 		l1_delta = np.matmul(l2_delta,self.lay2.T)* self.config["fonctionActivation"](l1,deriv=True)
-		#### parti bruno
-		print("self.lay1 " ,self.lay1 ,"\n\n\n\n")
-		print("l1_delta", l1_delta, "\n\n\n\n")
-		print("l1_delta.T*self.lay1", l1_delta.T*self.lay1)
-		#### parti bruno
-
+		
 		#Correction (calcul deltas des poids)
 
-		w1_delta = np.zeros(self.lay1.shape)
-		i = 0
-		j = 0
-		while(i < self.input.size): 
-			while(j < l1_delta.size):
-				w1_delta[i][j] = self.config["tauxApprentissage"]*l1_delta[j]*self.input[i]
-				j+=1
-			i+=1
-		print("w1_delta[0][0]: {}".format(w1_delta))
-		print("lay1 avant: {}".format(self.lay1))
+		w1_delta = self.correction(self.input,l1_delta)
+		w2_delta = self.correction(l1,l2_delta)
+		w3_delta = self.correction(l2,l3_delta)
+		##print("lay1 avant: \n{}".format(self.lay1))
+		##print("lay2 avant: \n{}".format(self.lay2))
+		#print("lay3 avant: \n{}".format(self.lay3))
+		
 		#actualisation
+		
 		self.lay1 += w1_delta
-		print("lay1 apres: {}".format(self.lay1))
+		self.lay2 += w2_delta
+		self.lay3 += w3_delta
+		#print("lay1 apres: \n{}".format(self.lay1))
+		#print("lay2 apres: \n{}".format(self.lay2))
+		#print("lay3 apres: \n{}".format(self.lay3))
 	
