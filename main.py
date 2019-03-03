@@ -1,6 +1,10 @@
-from classe import classe
-import random
-from function import fetch
+
+import sys
+sys.path.insert(0, "classe/")
+sys.path.insert(0, "function/")
+
+import classe
+import fetch
 
 dataset = fetch.getEpoque() 
 config = fetch.getConfig()

@@ -1,4 +1,7 @@
-from function import FuncActivation as act
+
+import sys
+sys.path.insert(0, "function/")
+import FuncActivation as act
 import re
 
 

@@ -20,9 +20,7 @@ class reseaux():
 
 
 	def activation(self,inputs,arrayPoids):
-		#print ("input : {}",inputs)
-		#print ("arrayPoids : {}",arrayPoids)
-		return self.config["fonctionActivation"](np.matmul(inputs,arrayPoids))
+		return self.config["fonctionActivation"](np.dot(inputs,arrayPoids))
 
 	def correction(self,inputs,deltas):
 		w_delta = np.zeros((inputs.shape[0],deltas.shape[0]))
@@ -49,19 +47,17 @@ class reseaux():
 		
 		#Correction (calcul deltas des poids)
 
-		w1_delta = self.correction(self.input,l1_delta)
-		w2_delta = self.correction(l1,l2_delta)
-		w3_delta = self.correction(l2,l3_delta)
-		##print("lay1 avant: \n{}".format(self.lay1))
-		##print("lay2 avant: \n{}".format(self.lay2))
-		#print("lay3 avant: \n{}".format(self.lay3))
-		
+		w1_delta_M = self.correction(self.input,l1_delta)
+		w2_delta_M = self.correction(l1,l2_delta)
+		w3_delta_M = self.correction(l2,l3_delta)
+
+
+		w1_delta = self.config["tauxApprentissage"]*np.outer(self.input, l1_delta)
+		w2_delta = self.config["tauxApprentissage"]*np.outer(l1, l2_delta)
+		w3_delta = self.config["tauxApprentissage"]*np.outer(l2, l3_delta)
+
 		#actualisation
 		
 		self.lay1 += w1_delta
 		self.lay2 += w2_delta
 		self.lay3 += w3_delta
-		#print("lay1 apres: \n{}".format(self.lay1))
-		#print("lay2 apres: \n{}".format(self.lay2))
-		#print("lay3 apres: \n{}".format(self.lay3))
-	
