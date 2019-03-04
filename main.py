@@ -7,16 +7,17 @@ import classe, random, fetch
 import numpy as np
 
 
-dataset = fetch.getEpoque()
-indiceInput = random.randrange(0,len(dataset))
-inputChoisie = np.asarray(dataset[indiceInput].data)
-config = fetch.getConfig()
-configSortie=fetch.getConfigSortie(config["FichierConfigSortie"])
-output = np.asarray(configSortie)
-outputDesire = output[dataset[indiceInput].resultat]
+dataset = fetch.getEpoque(nombreTrame=50)
+print("len:",len(dataset[0].data))
+#indiceInput = random.randrange(0,len(dataset))
+#inputChoisie = np.asarray(dataset[indiceInput].data)
+#config = fetch.getConfig()
+#configSortie=fetch.getConfigSortie(config["FichierConfigSortie"])
+#output = np.asarray(configSortie)
+#outputDesire = output[dataset[indiceInput].resultat]
 
-bestReseau = classe.reseaux(config)
-bestReseau.train(inputChoisie, outputDesire, 1)
+#bestReseau = classe.reseaux(config)
+#bestReseau.train(inputChoisie, outputDesire, 1)
 #print(bestReseau.lay1.shape)
 
 

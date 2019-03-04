@@ -5,13 +5,16 @@
 -initialisation des poids
 
 -interfacer les données avec l'entrer du systeme
-- créer le network
-- activation
--signal d'erreur
--correction
--actualisation
+- créer le network	x
+- activation	x
+-signal d'erreur	x
+-correction	x
+-actualisation	x
 
 
 
+-menu
+-calcul de temps
+-validation croisée
 -sauvegarder les poids
 -recharger les poids
