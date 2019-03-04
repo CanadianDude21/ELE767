@@ -12,12 +12,13 @@ class classEpoque():
 		self.data=[]
 		self.rawDataLine=rawData
 
-def getEpoque():
+def getEpoque(nombreTrame=60):
 
 	listEpoque=[]
 	line_number=0
 	tmplist=[]
 	tmpStr=""
+	modulo=1
 
 	f=open("DATA/data_train.txt","r")
 	for text_line in f:
@@ -34,9 +35,26 @@ def getEpoque():
 
 		tmplist=listEpoque[line_number].rawDataLine.split(" ") #transforme la string en une list
 		tmplist.pop() # retire le dernier element de la list (\n)
-		for x in tmplist:
-				listEpoque[line_number].data.append(float(x))
-			
+		tmplistlen=len(tmplist)
+		newtmplist=[]
+
+		for x in range(0,tmplistlen,60):	#crée une list de list de 60 elements
+			newtmplist.append(tmplist[x:x+60])	
+
+		for templist60 in newtmplist:	# retire des elements a chaque list de 60 elements si necessaire
+			for x in range(0, (60-nombreTrame)):
+				templist60.pop()
+
+		flat_list=[]	
+		for sublist in newtmplist:	# forme la list de list sous forme de list de donner
+			for item in sublist:
+				flat_list.append(item)
+
+		for data in flat_list:
+				listEpoque[line_number].data.append(float(data))
+
+
+
 		line_number=line_number+1;
 	f.close()	
 	return listEpoque

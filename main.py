@@ -7,6 +7,7 @@ import classe, random, fetch, configPoids
 import numpy as np
 
 
+
 dataset = fetch.getEpoque()
 indiceInput = random.randrange(0,len(dataset))
 inputChoisie = np.asarray(dataset[indiceInput].data)
@@ -27,6 +28,7 @@ configPoids.chargerPoids(bestReseau)
 
 	bestReseau.train(inputChoisie, outputDesire)
 #print(bestReseau.lay1.shape)"""
+
 
 
 
