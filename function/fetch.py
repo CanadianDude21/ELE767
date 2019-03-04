@@ -56,7 +56,8 @@ def getEpoque(nombreTrame=60):
 
 
 		line_number=line_number+1;
-	f.close()	
+	f.close()
+	print("done")
 	return listEpoque
 
 def getConfig():
