@@ -3,21 +3,30 @@ import sys
 sys.path.insert(0, "classe/")
 sys.path.insert(0, "function/")
 
-import classe, random, fetch
+import classe, random, fetch, configPoids
 import numpy as np
 
 
 dataset = fetch.getEpoque()
 indiceInput = random.randrange(0,len(dataset))
 inputChoisie = np.asarray(dataset[indiceInput].data)
+
 config = fetch.getConfig()
 configSortie=fetch.getConfigSortie(config["FichierConfigSortie"])
+
 output = np.asarray(configSortie)
 outputDesire = output[dataset[indiceInput].resultat]
 
 bestReseau = classe.reseaux(config)
-bestReseau.train(inputChoisie, outputDesire, 1)
-#print(bestReseau.lay1.shape)
+#configPoids.sauvegardePoids(bestReseau)
+configPoids.chargerPoids(bestReseau)
+"""for iteration in range(0,len(dataset)):
+	indiceInput = random.randrange(0,len(dataset))
+	inputChoisie = np.asarray(dataset[indiceInput].data)
+	outputDesire = output[dataset[indiceInput].resultat]
+
+	bestReseau.train(inputChoisie, outputDesire)
+#print(bestReseau.lay1.shape)"""
 
 
 
