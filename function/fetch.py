@@ -12,7 +12,7 @@ class classEpoque():
 		self.data=[]
 		self.rawDataLine=rawData
 
-def getEpoque(nombreTrame=60):
+def getEpoque(nombreTrame=60,pathToDataSet=""):
 
 	listEpoque=[]
 	line_number=0
@@ -20,7 +20,8 @@ def getEpoque(nombreTrame=60):
 	tmpStr=""
 	modulo=1
 
-	f=open("DATA/data_train.txt","r")
+	f=open(pathToDataSet,"r")
+	#f=open("DATA/data_train.txt","r")
 	for text_line in f:
 		index=0
 		listEpoque.append(classEpoque(text_line))
@@ -60,8 +61,9 @@ def getEpoque(nombreTrame=60):
 	print("done")
 	return listEpoque
 
-def getConfig():
-	f=open("config/config.txt","r")
+def getConfig(pathToConfig=""):
+	f=open(pathToConfig,"r")
+	#f=open("config/config.txt","r")
 	answer = {}
 	for line in f:
 	    k, v = line.strip().split(':')
@@ -78,7 +80,7 @@ def getConfig():
 				if answer[keys]=="sigmoid":
 					answer[keys]=act.sigmoid
 				elif answer[keys]=="tanh":
-					answer[keys]=act.tanh
+					answer[""]=act.tanh
 				else:
 					print("nope")
 	return answer
