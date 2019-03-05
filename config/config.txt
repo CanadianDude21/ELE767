@@ -1,8 +1,8 @@
-nombreCoucheCacheEntree:1
+nombreCoucheCachees:1
 fonctionActivation:sigmoid
 FichierConfigSortie:10
-neuroneEntree:2
-neuroneCacher:2
+neuroneEntree:10
+neuroneCacher:10
 neuroneSortie:10
 nbDonneeEntrant:1560
 tauxApprentissage:0.1

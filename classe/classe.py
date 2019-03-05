@@ -45,7 +45,9 @@ class reseaux():
 		l3_delta = (outputDesire - l3)*self.config["fonctionActivation"](l3,deriv=True)
 		l2_delta = np.matmul(l3_delta,self.lay3.T)*self.config["fonctionActivation"](l2,deriv=True)
 		l1_delta = np.matmul(l2_delta,self.lay2.T)* self.config["fonctionActivation"](l1,deriv=True)
-		print("l2_delta:\n{}".format(l2_delta))
+		print("l3:\n{}".format(l3))
+		print("\noutputDesire:\n{}".format(outputDesire))
+		print("\nl3_delta:\n{}".format(l3_delta))
 		#Correction (calcul deltas des poids)
 
 		w1_delta_M = self.correction(input,l1_delta)

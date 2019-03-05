@@ -2,29 +2,77 @@ import numpy as np
 np.set_printoptions(threshold=1000000)
 
 def sauvegardePoids(reseau):
-	f=open("config/configPoids.txt","w")
-	f.write("poids de couche 1\n"+np.array2string(reseau.lay1)+"\npoids de couche 2\n"+np.array2string(reseau.lay2)
-		+"\npoids de couche 3\n"+np.array2string(reseau.lay3))
-	f.close()
-	
+	data = reseau.lay1
+	print(reseau.lay1)
+
+	# Write the array to disk
+	with open('config/configPoidsLayer1.txt', 'w') as outfile:
+	# I'm writing a header here just for the sake of readability
+	# Any line starting with "#" will be ignored by numpy.loadtxt
+		outfile.write('# Poids couche 1: {0}\n#Donnée 1\n'.format(data.shape))
+		# Iterating through a ndimensional array produces slices along
+		# the last axis. This is equivalent to data[i,:,:] in this case
+		i = 2
+		for data_slice in data:
+
+		# The formatting string indicates that I'm writing out
+		# the values in left-justified columns 7 characters in width
+		# with 2 decimal places.  
+			np.savetxt(outfile, data_slice, fmt='%-7.10f')
+
+		# Writing out a break to indicate different slices...
+			outfile.write('# Donnée {}\n'.format(i))
+			i+=1
+		print("couche 1 done")
+	outfile.close()
+
+	with open('config/configPoidsLayer2.txt', 'w') as outfile:
+		data = reseau.lay2
+		print(reseau.lay2)
+		outfile.write('# Poids couche 2: {0}\n#Neurone entrée 1\n'.format(data.shape))
+		# Iterating through a ndimensional array produces slices along
+		# the last axis. This is equivalent to data[i,:,:] in this case
+		i = 2
+		for data_slice in data:
+
+		# The formatting string indicates that I'm writing out
+		# the values in left-justified columns 7 characters in width
+		# with 2 decimal places.  
+			np.savetxt(outfile, data_slice, fmt='%-7.10f')
+
+		# Writing out a break to indicate different slices...
+			outfile.write('# Neurone entrée {}\n'.format(i))
+			i+=1
+		print("couche 2 done")
+	outfile.close()
+
+	with open('config/configPoidsLayer3.txt', 'w') as outfile:
+		data = reseau.lay3
+		print(reseau.lay3)
+		outfile.write('# Poids couche 3: {0}\n#Neurone entrée 1\n'.format(data.shape))
+		# Iterating through a ndimensional array produces slices along
+		# the last axis. This is equivalent to data[i,:,:] in this case
+		i = 2
+		for data_slice in data:
+
+		# The formatting string indicates that I'm writing out
+		# the values in left-justified columns 7 characters in width
+		# with 2 decimal places.  
+			np.savetxt(outfile, data_slice, fmt='%-7.10f')
+
+		# Writing out a break to indicate different slices...
+			outfile.write('# Neurone entrée {}\n'.format(i))
+			i+=1
+		print("couche 3 done")
 
 def chargerPoids(reseau):
-	f=open("config/configPoids.txt","r")
-	contenu = f.read()
-	contenu = contenu.replace("[","")
-	contenu = contenu.replace("]","")
-	contenu = contenu.replace("\n"," ")
-	contenu = contenu.replace("poids de couche 1","")
-	contenu = contenu.replace("poids de couche 2","")
-	contenu = contenu.replace("poids de couche 3","")
-	contenu = contenu.replace("  "," ")
-	print(contenu)
-	contenu_list = contenu.split(" ")
-	"""lay1 = np.fromstring(contenu,count=reseau.lay1.size,sep=' ')
-	lay1 = np.reshape(lay1,reseau.lay1.shape)
-	lay2 = np.fromstring(contenu,count=reseau.lay2.size,sep=' ')"""
-	print(reseau.lay1.shape)
-	print(reseau.lay2.shape)
-	print(reseau.lay3.shape)
-	print(len(contenu_list))
-	
+	# Read the array from disk
+	new_data = np.loadtxt('config/configPoidsLayer1.txt')
+	reseau.lay1 = new_data.reshape(reseau.lay1.shape)
+	#print(reseau.lay1)
+	new_data = np.loadtxt('config/configPoidsLayer2.txt')
+	reseau.lay2 = new_data.reshape(reseau.lay2.shape)
+	#print(reseau.lay2)
+	new_data = np.loadtxt('config/configPoidsLayer3.txt')
+	reseau.lay3 = new_data.reshape(reseau.lay3.shape)
+	#print(reseau.lay3)
