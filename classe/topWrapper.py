@@ -1,22 +1,30 @@
 
 import classe, random, fetch
-import tkinter as tk
+from tkinter import *
 from tkinter.filedialog import askopenfilename
 import numpy as np
+import string
 import os
 
 
 class topWrapper():
 
 	def __init__(self):
-		self.config_path = "config/config.txt"
-		self.dataset_path = "DATA/data_train.txt"
+		self.root=Tk()
+
+		self.config_path_name = "config/config.txt"
+		self.dataset_path_name = "DATA/data_train.txt"
+		self.config_path = StringVar()#"config/config.txt"
+		self.dataset_path = StringVar()#"DATA/data_train.txt"
+		self.config_path.set(self.config_path_name)
+		self.dataset_path.set(self.dataset_path_name)
 		#config
-		self.config = fetch.getConfig(pathToConfig=self.config_path)
+		print(self.config_path.get())
+		self.config = fetch.getConfig(pathToConfig=self.config_path.get())
 		self.configSortie=fetch.getConfigSortie(self.config["FichierConfigSortie"])
 		
 		#dataset
-		self.dataset = fetch.getEpoque(pathToDataSet=self.dataset_path)
+		self.dataset = fetch.getEpoque(pathToDataSet=self.dataset_path.get())
 		self.indiceInput = random.randrange(0,len(self.dataset))
 		self.inputChoisie = np.asarray(self.dataset[self.indiceInput].data)
 
@@ -32,9 +40,12 @@ class topWrapper():
 
 
 	def browse_dataset(self):
-		self.dataset_path = askopenfilename()
-		print(filename)
+		self.dataset_path_name = askopenfilename()
+		self.dataset_path.set(self.dataset_path_name)
+		print(self.dataset_path.get())
 
 	def browse_config(self):
-		self.config_path= askopenfilename()
-		print(filename)
+		config_path_name= askopenfilename()
+
+		self.config_path.set(config_path_name)
+		print(self.config_path.get())
