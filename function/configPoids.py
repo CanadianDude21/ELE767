@@ -3,7 +3,7 @@ np.set_printoptions(threshold=1000000)
 
 def sauvegardePoids(reseau):
 	data = reseau.lay1
-	print(reseau.lay1)
+	#print(reseau.lay1)
 
 	# Write the array to disk
 	with open('config/configPoidsLayer1.txt', 'w') as outfile:
@@ -23,12 +23,12 @@ def sauvegardePoids(reseau):
 		# Writing out a break to indicate different slices...
 			outfile.write('# Donnée {}\n'.format(i))
 			i+=1
-		print("couche 1 done")
+		#print("couche 1 done")
 	outfile.close()
 
 	with open('config/configPoidsLayer2.txt', 'w') as outfile:
 		data = reseau.lay2
-		print(reseau.lay2)
+		#print(reseau.lay2)
 		outfile.write('# Poids couche 2: {0}\n#Neurone entrée 1\n'.format(data.shape))
 		# Iterating through a ndimensional array produces slices along
 		# the last axis. This is equivalent to data[i,:,:] in this case
@@ -43,12 +43,12 @@ def sauvegardePoids(reseau):
 		# Writing out a break to indicate different slices...
 			outfile.write('# Neurone entrée {}\n'.format(i))
 			i+=1
-		print("couche 2 done")
+		#print("couche 2 done")
 	outfile.close()
 
 	with open('config/configPoidsLayer3.txt', 'w') as outfile:
 		data = reseau.lay3
-		print(reseau.lay3)
+		#print(reseau.lay3)
 		outfile.write('# Poids couche 3: {0}\n#Neurone entrée 1\n'.format(data.shape))
 		# Iterating through a ndimensional array produces slices along
 		# the last axis. This is equivalent to data[i,:,:] in this case
@@ -63,7 +63,7 @@ def sauvegardePoids(reseau):
 		# Writing out a break to indicate different slices...
 			outfile.write('# Neurone entrée {}\n'.format(i))
 			i+=1
-		print("couche 3 done")
+		#print("couche 3 done")
 
 def chargerPoids(reseau):
 	# Read the array from disk

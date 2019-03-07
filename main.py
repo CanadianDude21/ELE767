@@ -8,7 +8,7 @@ import numpy as np
 
 
 
-dataset = fetch.getEpoque()
+dataset = fetch.getEpoque(40)
 indiceInput = random.randrange(0,len(dataset))
 inputChoisie = np.asarray(dataset[indiceInput].data)
 #inputChoisie = np.asarray(dataset[0].data)
@@ -20,27 +20,26 @@ output = np.asarray(configSortie)
 outputDesire = output[dataset[indiceInput].resultat]
 
 bestReseau = classe.reseaux(config)
-#configPoids.sauvegardePoids(bestReseau)
+configPoids.sauvegardePoids(bestReseau)
 configPoids.chargerPoids(bestReseau)
 resultat = bestReseau.test(inputChoisie)
-print(resultat)
-print("\nsortie desiree:\n{}".format(dataset[indiceInput].resultat))
-# i = 0
-# while i<10:
-# 	for iteration in range(0,len(dataset)):
-# 	#for iteration in range(0,1):
-# 		indiceInput = random.randrange(0,len(dataset))
-# 		inputChoisie = np.asarray(dataset[indiceInput].data)
-# 		#inputChoisie = np.asarray(dataset[0].data)
-# 		outputDesire = output[dataset[indiceInput].resultat]
-# 		#outputDesire = output[dataset[0].resultat]
 
-# 		bestReseau.train(inputChoisie, outputDesire)
-# 		print("\nsortie desiree:\n{}".format(dataset[indiceInput].resultat))
-# 	i+=1
+i = 0
+while i<2:
+	for iteration in range(0,len(dataset)):
+	#for iteration in range(0,1):
+		indiceInput = random.randrange(0,len(dataset))
+		inputChoisie = np.asarray(dataset[indiceInput].data)
+		#inputChoisie = np.asarray(dataset[0].data)
+		outputDesire = output[dataset[indiceInput].resultat]
+		#outputDesire = output[dataset[0].resultat]
+
+		bestReseau.train(inputChoisie, outputDesire)
+	i+=1
+
 
 # #print(bestReseau.lay1.shape)
-# configPoids.sauvegardePoids(bestReseau)
+configPoids.sauvegardePoids(bestReseau)
 # print(bestReseau.test(inputChoisie))
 # print("\nsortie desiree:\n{}".format(dataset[indiceInput].resultat))
 
