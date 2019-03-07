@@ -80,7 +80,7 @@ def getConfig(pathToConfig=""):
 				if answer[keys]=="sigmoid":
 					answer[keys]=act.sigmoid
 				elif answer[keys]=="tanh":
-					answer[""]=act.tanh
+					answer[keys]=act.tanh
 				else:
 					print("nope")
 	return answer

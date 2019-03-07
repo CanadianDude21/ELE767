@@ -12,7 +12,7 @@ class reseaux():
 		self.lay3 = np.random.uniform(-0.1,0.1,(self.config["neuroneCacher"], self.config["neuroneSortie"]))
 
 	def activation(self,inputs,arrayPoids):
-		return self.config["fonctionActivation"](np.dot(inputs,arrayPoids))
+		return self.config["foncActi"](np.dot(inputs,arrayPoids))
 
 	def correction(self,inputs,deltas):
 		w_delta = np.zeros((inputs.shape[0],deltas.shape[0]))
@@ -42,8 +42,8 @@ class reseaux():
 
 
 		#Signal d'erreur (Calcul des deltas d'erreur)
-		l3_delta = (outputDesire - l3)*self.config["fonctionActivation"](l3,deriv=True)
-		l2_delta = np.matmul(l3_delta,self.lay3.T)*self.config["fonctionActivation"](l2,deriv=True)
+		l3_delta = (outputDesire - l3)*self.config["foncActi"](l3,deriv=True)
+		l2_delta = np.matmul(l3_delta,self.lay3.T)*self.config["foncActi"](l2,deriv=True)
 		l1_delta = np.matmul(l2_delta,self.lay2.T)* self.config["fonctionActivation"](l1,deriv=True)
 
 		w1_delta_M = self.correction(input,l1_delta)
@@ -59,4 +59,3 @@ class reseaux():
 		self.lay1 += w1_delta
 		self.lay2 += w2_delta
 		self.lay3 += w3_delta
-
