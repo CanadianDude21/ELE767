@@ -37,8 +37,13 @@ class topWrapper():
 
 	# les foncitons ici sont des bouttons
 	def train(self):
-		algo.apprentissage(bestReseau,self.data)
+		algo.apprentissage(bestReseau,self.datasetTrain,self.output,nbrEpoques)
 
+	def VC(self):
+		algo.VC(bestReseau,datasetVC,output)
+
+	def generalisation(self):
+		algo.test(bestReseau,datasetTest,output)
 
 	def browse_dataset(self):
 		self.dataset_path_name = askopenfilename()
