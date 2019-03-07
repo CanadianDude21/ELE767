@@ -50,11 +50,14 @@ tk.Label(wrapper.root, textvariable=wrapper.datasetTest_path,justify="left", anc
 
 btn1 = tk.Button(wrapper.root, text="Train", command=wrapper.train)
 #btn1.pack(side='left', padx=10, pady=5, anchor='sw')
-btn3 = tk.Button(wrapper.root, text="Train", command=wrapper.train)
-btn2 = tk.Button(wrapper.root, text="Quit", command=wrapper.root.destroy)
+btn2 = tk.Button(wrapper.root, text="TrainVc", command=wrapper.train)
+btn2 = tk.Button(wrapper.root, text="TrainVc", command=wrapper.VC)
+btn3 = tk.Button(wrapper.root, text="generalisation", command=wrapper.VC)
+btn4 = tk.Button(wrapper.root, text="Quit", command=wrapper.root.destroy)
 btn1.grid(row=30 ,column=2)
 btn2.grid(row=31 ,column=2)
-btn2.grid(row=32 ,column=2)
+btn3.grid(row=32 ,column=2)
+btn4.grid(row=33 ,column=2)
 
 
 for keys,x in zip(wrapper.config.keys(),range(len(wrapper.config))):
