@@ -42,7 +42,3 @@ while i<2:
 configPoids.sauvegardePoids(bestReseau)
 # print(bestReseau.test(inputChoisie))
 # print("\nsortie desiree:\n{}".format(dataset[indiceInput].resultat))
-
-
-
-print("done")
