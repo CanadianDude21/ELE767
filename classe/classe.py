@@ -7,12 +7,12 @@ class reseaux():
 
 		self.config = configOriginal
 
-		self.lay1 = np.random.uniform(-0.1,0.1,(self.config["nbDonneeEntrant"], self.config["neuroneEntree"]))
+		self.lay1 = np.random.uniform(-0.1,0.1,(self.config["nbTrames"]*26, self.config["neuroneEntree"]))
 		self.lay2 = np.random.uniform(-0.1,0.1,(self.config["neuroneEntree"], self.config["neuroneCacher"]))
 		self.lay3 = np.random.uniform(-0.1,0.1,(self.config["neuroneCacher"], self.config["neuroneSortie"]))
 
 	def activation(self,inputs,arrayPoids):
-		return self.config["fonctionActivation"](np.dot(inputs,arrayPoids))
+		return self.config["foncActi"](np.dot(inputs,arrayPoids))
 
 	def correction(self,inputs,deltas):
 		w_delta = np.zeros((inputs.shape[0],deltas.shape[0]))
@@ -35,9 +35,9 @@ class reseaux():
 			l3 = self.activation(l2,self.lay3)
 			print ("activation done")
 			#Signal d'erreur (Calcul des deltas d'erreur)
-			l3_delta = (outputDesire - l3)*self.config["fonctionActivation"](l3,deriv=True)
-			l2_delta = np.matmul(l3_delta,self.lay3.T)*self.config["fonctionActivation"](l2,deriv=True)
-			l1_delta = np.matmul(l2_delta,self.lay2.T)* self.config["fonctionActivation"](l1,deriv=True)
+			l3_delta = (outputDesire - l3)*self.config["foncActi"](l3,deriv=True)
+			l2_delta = np.matmul(l3_delta,self.lay3.T)*self.config["foncActi"](l2,deriv=True)
+			l1_delta = np.matmul(l2_delta,self.lay2.T)* self.config["foncActi"](l1,deriv=True)
 
 			#Correction (calcul deltas des poids)
 

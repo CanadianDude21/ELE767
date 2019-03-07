@@ -78,9 +78,9 @@ def getConfig(pathToConfig=""):
 				answer[keys]=float(answer[keys])
 			else:
 				if answer[keys]=="sigmoid":
-					answer[keys]=act.sigmoid
+					answer["foncActi"]=act.sigmoid
 				elif answer[keys]=="tanh":
-					answer[""]=act.tanh
+					answer["foncActi"]=act.tanh
 				else:
 					print("nope")
 	return answer
