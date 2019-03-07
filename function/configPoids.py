@@ -3,7 +3,7 @@ np.set_printoptions(threshold=1000000)
 
 def sauvegardePoids(reseau):
 	data = reseau.lay1
-	#print(reseau.lay1)
+	print("début de sauvegarde des poids")
 
 	# Write the array to disk
 	with open('config/configPoidsLayer1.txt', 'w') as outfile:
@@ -64,8 +64,10 @@ def sauvegardePoids(reseau):
 			outfile.write('# Neurone entrée {}\n'.format(i))
 			i+=1
 		#print("couche 3 done")
+	print("fin de sauvegarde des poids")
 
 def chargerPoids(reseau):
+	print("début de chargement des poids")
 	# Read the array from disk
 	new_data = np.loadtxt('config/configPoidsLayer1.txt')
 	reseau.lay1 = new_data.reshape(reseau.lay1.shape)
@@ -76,3 +78,4 @@ def chargerPoids(reseau):
 	new_data = np.loadtxt('config/configPoidsLayer3.txt')
 	reseau.lay3 = new_data.reshape(reseau.lay3.shape)
 	#print(reseau.lay3)
+	print("fin de chargement des poids")

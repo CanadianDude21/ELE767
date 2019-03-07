@@ -7,7 +7,7 @@ class reseaux():
 
 		self.config = configOriginal
 
-		self.lay1 = np.random.uniform(-0.1,0.1,(self.config["nbDonneeEntrant"], self.config["neuroneEntree"]))
+		self.lay1 = np.random.uniform(-0.1,0.1,(self.config["nbTrames"]*26, self.config["neuroneEntree"]))
 		self.lay2 = np.random.uniform(-0.1,0.1,(self.config["neuroneEntree"], self.config["neuroneCacher"]))
 		self.lay3 = np.random.uniform(-0.1,0.1,(self.config["neuroneCacher"], self.config["neuroneSortie"]))
 
@@ -39,6 +39,7 @@ class reseaux():
 		l1 = self.activation(input,self.lay1)
 		l2 = self.activation(l1,self.lay2)
 		l3 = self.activation(l2,self.lay3)
+
 
 		#Signal d'erreur (Calcul des deltas d'erreur)
 		l3_delta = (outputDesire - l3)*self.config["fonctionActivation"](l3,deriv=True)

@@ -4,5 +4,5 @@ FichierConfigSortie:10
 neuroneEntree:500
 neuroneCacher:100
 neuroneSortie:10
-nbDonneeEntrant:1040
+nbTrames:40
 tauxApprentissage:0.1
