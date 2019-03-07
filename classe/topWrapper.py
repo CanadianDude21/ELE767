@@ -2,6 +2,7 @@
 import classe, random, fetch
 from tkinter import *
 from tkinter.filedialog import askopenfilename
+import FuncActivation as act
 import numpy as np
 import string
 import os
@@ -12,24 +13,25 @@ class topWrapper():
 	def __init__(self):
 		self.root=Tk()
 
-		self.config_path = StringVar()
-		self.dataset_path = StringVar()
-		self.config_path.set("config/config.txt")
-		self.dataset_path.set("DATA/data_train.txt")
+		self.config_path = StringVar(value="config/config.txt")
+		self.datasetTrain_path = StringVar(value="DATA/data_train.txt")
+		self.datasetVC_path = StringVar(value="DATA/data_vc.txt")
+		self.datasetTest_path = StringVar(value="DATA/data_test.txt")
 
 		#config
 		self.config = fetch.getConfig(pathToConfig=self.config_path.get())
+		self.update_config_for_gui()
 		self.configSortie=fetch.getConfigSortie(self.config["FichierConfigSortie"])
 
 		
 		#dataset
-		self.datasetTrain = fetch.getEpoque(nombreTrame=self.config["nbrTrames"],"DATA/data_train.txt")
-		self.datasetVC = fetch.getEpoque(nombreTrame=self.config["nbrTrames"],"DATA/data_vc.txt")
-		self.datasetTest = fetch.getEpoque(nombreTrame=self.config["nbrTrames"],"DATA/data_test.txt")
+		self.datasetTrain = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.datasetTrain_path.get())
+		self.datasetVC = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.datasetVC_path.get())
+		self.datasetTest = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.datasetTrain_path.get())
 		
 
 		self.output = np.asarray(self.configSortie)
-		self.outputDesire = self.output[self.dataset[self.indiceInput].resultat]
+
 
 		#network
 		self.bestReseau = classe.reseaux(self.config)
@@ -39,10 +41,28 @@ class topWrapper():
 		algo.apprentissage(bestReseau,self.data)
 
 
-	def browse_dataset(self):
-		self.dataset_path.set(askopenfilename())
-		print(self.dataset_path.get())
+	def browse_datasetTrain_path(self):
+		self.datasetTrain_path.set(askopenfilename())
+
+
+	def browse_datasetVC_path(self):
+		self.datasetVC_path.set(askopenfilename())
+
+	def browse_datasetTest_path(self):
+		self.datasetTest_path.set(askopenfilename())
 
 	def browse_config(self):
 		self.config_path.set(askopenfilename())
-		print(self.config_path.get())
+
+
+
+	def update_config_for_gui(self):
+
+		if self.config["fonctionActivation"]==act.sigmoid:
+			self.config["foncActi"]=act.sigmoid
+			self.config["fonctionActivation"]="sigmoid"
+		elif self.config["fonctionActivation"]==act.tanh:
+			self.config["fonctionActivation"]="tanh"
+			self.config["foncActi"]=act.tanh
+		else:
+			print("nope")

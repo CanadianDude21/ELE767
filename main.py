@@ -34,10 +34,16 @@ configPathLabelVar = tk.Label(wrapper.root, textvariable=wrapper.config_path,jus
 configPathLabelVar.grid(row=1,column=1)
 
 
-datasetPathLabel = tk.Label(wrapper.root,justify="left", anchor='nw',text="datasetPath:")
-datasetPathLabel.grid(row=2,column=0)
-datasetPathLabelVar = tk.Label(wrapper.root, textvariable=wrapper.dataset_path,justify="left", anchor='nw')
-datasetPathLabelVar.grid(row=2,column=1)
+tk.Label(wrapper.root,justify="left", anchor='nw',text="datasetTrainPath:").grid(row=2,column=0)
+tk.Label(wrapper.root, textvariable=wrapper.datasetTrain_path,justify="left", anchor='nw').grid(row=2,column=1)
+
+ 
+tk.Label(wrapper.root,justify="left", anchor='nw',text="datasetVC_path:").grid(row=3,column=0)
+tk.Label(wrapper.root, textvariable=wrapper.datasetVC_path,justify="left", anchor='nw').grid(row=3,column=1)
+tk.Label(wrapper.root,justify="left", anchor='nw',text="datasetTest_path:").grid(row=4,column=0)
+tk.Label(wrapper.root, textvariable=wrapper.datasetTest_path,justify="left", anchor='nw').grid(row=4,column=1)
+
+
 
 
 #champ_label.place(height=30, width=600)
@@ -62,7 +68,9 @@ for keys,x in zip(wrapper.config.keys(),range(len(wrapper.config))):
 
 menubar = tk.Menu(wrapper.root)
 filemenu = tk.Menu(menubar, tearoff=0)
-filemenu.add_command(label="Open dataset", command=wrapper.browse_dataset)
+filemenu.add_command(label="Open dataset Train", command=wrapper.browse_datasetTrain_path)
+filemenu.add_command(label="Open dataset VC", command=wrapper.browse_datasetVC_path)
+filemenu.add_command(label="Open dataset Test", command=wrapper.browse_datasetTest_path)
 filemenu.add_command(label="Open config", command=wrapper.browse_config)
 filemenu.add_separator()
 filemenu.add_command(label="Exit", command=wrapper.root.quit)
