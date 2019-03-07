@@ -26,37 +26,36 @@ class reseaux():
 			i+=1
 		return w_delta 
 
-	def train(self, input, outputDesire, nbrIterations):
+	def test(self, input):
+		l1 = self.activation(input,self.lay1)
+		l2 = self.activation(l1,self.lay2)
+		l3 = self.activation(l2,self.lay3)
+		return l3 #output obtenue
 
-		for iteration in range(nbrIterations):
-			#Activation
-			l1 = self.activation(input,self.lay1)
-			l2 = self.activation(l1,self.lay2)
-			l3 = self.activation(l2,self.lay3)
-			print ("activation done")
-			#Signal d'erreur (Calcul des deltas d'erreur)
-			l3_delta = (outputDesire - l3)*self.config["foncActi"](l3,deriv=True)
-			l2_delta = np.matmul(l3_delta,self.lay3.T)*self.config["foncActi"](l2,deriv=True)
-			l1_delta = np.matmul(l2_delta,self.lay2.T)* self.config["foncActi"](l1,deriv=True)
+	def train(self, input, outputDesire):
 
-			#Correction (calcul deltas des poids)
-
-			w1_delta_M = self.correction(input,l1_delta)
-			w2_delta_M = self.correction(l1,l2_delta)
-			w3_delta_M = self.correction(l2,l3_delta)
+		
+		#Activation
+		l1 = self.activation(input,self.lay1)
+		l2 = self.activation(l1,self.lay2)
+		l3 = self.activation(l2,self.lay3)
 
 
-			w1_delta = self.config["tauxApprentissage"]*np.outer(input, l1_delta)
-			w2_delta = self.config["tauxApprentissage"]*np.outer(l1, l2_delta)
-			w3_delta = self.config["tauxApprentissage"]*np.outer(l2, l3_delta)
+		#Signal d'erreur (Calcul des deltas d'erreur)
+		l3_delta = (outputDesire - l3)*self.config["fonctionActivation"](l3,deriv=True)
+		l2_delta = np.matmul(l3_delta,self.lay3.T)*self.config["fonctionActivation"](l2,deriv=True)
+		l1_delta = np.matmul(l2_delta,self.lay2.T)* self.config["fonctionActivation"](l1,deriv=True)
 
-			#actualisation
-			#print("lay1 avant: {}".format(self.lay1))
-			print("lay2 avant: {}".format(self.lay2))
-			#print("lay3 avant: {}".format(self.lay3))
-			self.lay1 += w1_delta
-			self.lay2 += w2_delta
-			self.lay3 += w3_delta
-			#print("lay1 après: {}".format(self.lay1))
-			print("lay2 après: {}".format(self.lay2))
-			#print("lay3 après: {}".format(self.lay3))
+		w1_delta_M = self.correction(input,l1_delta)
+		w2_delta_M = self.correction(l1,l2_delta)
+		w3_delta_M = self.correction(l2,l3_delta)
+
+
+		w1_delta = self.config["tauxApprentissage"]*np.outer(input, l1_delta)
+		w2_delta = self.config["tauxApprentissage"]*np.outer(l1, l2_delta)
+		w3_delta = self.config["tauxApprentissage"]*np.outer(l2, l3_delta)
+
+		#actualisation
+		self.lay1 += w1_delta
+		self.lay2 += w2_delta
+		self.lay3 += w3_delta

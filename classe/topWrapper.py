@@ -23,9 +23,10 @@ class topWrapper():
 
 		
 		#dataset
-		self.dataset = fetch.getEpoque(pathToDataSet=self.dataset_path.get())
-		self.indiceInput = random.randrange(0,len(self.dataset))
-		self.inputChoisie = np.asarray(self.dataset[self.indiceInput].data)
+		self.datasetTrain = fetch.getEpoque(nombreTrame=self.config["nbrTrames"],"DATA/data_train.txt")
+		self.datasetVC = fetch.getEpoque(nombreTrame=self.config["nbrTrames"],"DATA/data_vc.txt")
+		self.datasetTest = fetch.getEpoque(nombreTrame=self.config["nbrTrames"],"DATA/data_test.txt")
+		
 
 		self.output = np.asarray(self.configSortie)
 		self.outputDesire = self.output[self.dataset[self.indiceInput].resultat]
@@ -35,7 +36,7 @@ class topWrapper():
 
 	# les foncitons ici sont des bouttons
 	def train(self):
-		self.bestReseau.train(self.inputChoisie, self.outputDesire,1)
+		algo.apprentissage(bestReseau,self.data)
 
 
 	def browse_dataset(self):
