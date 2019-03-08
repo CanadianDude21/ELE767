@@ -18,7 +18,7 @@ class reseaux():
 		self.lay.append(np.random.uniform(-0.1,0.1,(self.config["neuroneCacher"][i-1], self.config["neuroneSortie"])))
 
 	def activation(self,inputs,arrayPoids):
-		return self.config["foncActi"](np.dot(inputs,arrayPoids))
+		return self.config["fonctionActivation"](np.dot(inputs,arrayPoids))
 
 	def correction(self,inputs,deltas):
 		w_delta = np.zeros((inputs.shape[0],deltas.shape[0]))
@@ -33,10 +33,11 @@ class reseaux():
 		return w_delta 
 
 	def test(self, input):
-		l1 = self.activation(input,self.lay1)
-		l2 = self.activation(l1,self.lay2)
-		l3 = self.activation(l2,self.lay3)
-		return l3 #output obtenue
+		activations=[]
+		activations.append(self.activation(input,self.lay[0]))
+		for i in range(self.config["nombreCoucheCachees"]+1):
+			activations.append(self.activation(activations[i],self.lay[i+1]))
+		return activations[-1] #output obtenue
 
 	def train(self, input, outputDesire):
 
