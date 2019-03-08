@@ -54,8 +54,8 @@ class ui:
 
 
 
-		tk.Button(self.wrapper.root, text="update Current Config", width=10, command=lambda:self.wrapper.updateCurrentConfig(self.configkeys,self.configlist)).grid(columnspan=3,row=33,column=30)
-		#tk.Button(self.wrapper.root, text="update Current Config", width=10, command=self.wrapper.save_config).grid(columnspan=3,row=33,column=31)
+		tk.Button(self.wrapper.root, text="update Current Config", height = 5, width = 20, command=lambda:self.wrapper.updateCurrentConfig(self.configkeys,self.configlist)).grid(columnspan=3,row=33,column=30)
+		tk.Button(self.wrapper.root, text="save Current Config", height = 5, width = 20, command=self.wrapper.save_config).grid(columnspan=3,row=33,column=33)
 
 		for keys,x in zip(self.wrapper.config.keys(),range(len(self.wrapper.config))):
 			self.configkeys.append(keys)

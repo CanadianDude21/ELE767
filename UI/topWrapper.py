@@ -19,7 +19,8 @@ class topWrapper():
 		self.datasetTest_path = StringVar(value="DATA/data_test.txt")
 
 		#config
-		self.pathtosave=""
+		self.baseConfigName="SeqConfig/"
+		self.currentConfigPathName=""
 		self.configui={}
 		self.config = fetch.getConfig(pathToConfig=self.config_path.get())
 		self.update_config_for_gui(self.config)
@@ -36,6 +37,9 @@ class topWrapper():
 		self.output = np.asarray(self.configSortie)
 
 
+		self.meanPourcentVC
+		self.meanPourcentTEST
+		self.epoque
 		#network
 		self.bestReseau = classe.reseaux(self.config)
 
@@ -88,9 +92,40 @@ class topWrapper():
 			self.configui["foncActi"]=act.tanh
 		else:
 			print("nope")
-		print(self.configui)
 
 	def save_config (self):
 
-	#	if not os.path.exists(directory):
-	#   	os.makedirs(directory)
+		baseConfigName=self.baseConfigName
+		configLine=""
+		configFileString=""
+
+		for keys in self.configui.keys():
+			if keys != "foncActi":
+				configLine=configLine+str(self.configui[keys])+"_"
+		if not os.path.exists(baseConfigName+configLine):
+			os.makedirs(baseConfigName+configLine)
+
+		self.currentConfigPathName=baseConfigName+configLine+"/config.txt"
+		savePathForConfigRM=self.baseConfigName+configLine+"ConfigRM.txt"
+
+		if not os.path.exists(savePathForConfigRM):
+			with open(savePathForConfigRM, 'w') as outfile:
+				tmpstr=""
+				for keys in self.configui.keys():
+					if keys != "foncActi":
+						tmpstr+=keys+"_"
+
+				outfile.write(configLine+"\n")
+				outfile.write(tmpstr+"\n")
+				outfile.write("la postion du premier chiffre correspond a nombreCoucheCachees et ainsi de suite...")
+
+			outfile.close()
+
+		if not os.path.exists(self.currentConfigPathName):
+			with open(self.currentConfigPathName, 'w') as outfile:
+
+				for keys in self.configui.keys():
+					if keys != "foncActi":
+						configFileString=configFileString+keys+":"+str(self.configui[keys])+"\n"
+				outfile.write(configFileString)
+			outfile.close()
