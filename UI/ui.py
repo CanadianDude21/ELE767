@@ -72,9 +72,10 @@ class ui:
 
 		menubar = tk.Menu(self.wrapper.root)
 		filemenu = tk.Menu(menubar, tearoff=0)
-		filemenu.add_command(label="Open dataset Train", command=self.wrapper.browse_datasetTrain_path)
-		filemenu.add_command(label="Open dataset VC", command=self.wrapper.browse_datasetVC_path)
-		filemenu.add_command(label="Open dataset Test", command=self.wrapper.browse_datasetTest_path)
+		filemenu.add_command(label="load dataset Train", command=self.wrapper.browse_datasetTrain_path)
+		filemenu.add_command(label="load dataset VC", command=self.wrapper.browse_datasetVC_path)
+		filemenu.add_command(label="load dataset Test", command=self.wrapper.browse_datasetTest_path)
+		filemenu.add_command(label="load poids neurones", command=self.wrapper.browse_load_poids)
 		filemenu.add_command(label="Open config", command=self.wrapper.browse_config)
 		filemenu.add_separator()
 		filemenu.add_command(label="Exit", command=self.wrapper.root.quit)

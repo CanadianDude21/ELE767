@@ -1,4 +1,4 @@
-nombreCoucheCachees:1
+nombreCoucheCachees:3
 neuroneEntree:500
 neuroneCacher:100 50 20
 neuroneSortie:10

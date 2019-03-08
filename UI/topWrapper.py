@@ -1,7 +1,8 @@
 
 import classe, random, fetch
 from tkinter import *
-from tkinter.filedialog import askopenfilename
+from tkinter.filedialog import *
+import configPoids
 import FuncActivation as act
 import numpy as np
 import algo
@@ -58,7 +59,9 @@ class topWrapper():
 		self.datasetTrain_path.set(askopenfilename())
 
 	def browse_load_poids(self):
-		load_poids_path.set(askdirectory ())
+		load_poids_path = askdirectory ()
+		configPoids.chargerPoids(self.bestReseau,load_poids_path)
+		
 
 
 	def browse_datasetVC_path(self):
@@ -127,14 +130,13 @@ class topWrapper():
 				outfile.write("la postion du premier chiffre correspond a nombreCoucheCachees et ainsi de suite...")
 
 			outfile.close()
+		if not os.path.exists(currentConfigPathName):
+			with open(currentConfigPathName, 'w') as outfile:
 
-		#if not os.path.exists(self.currentConfigPathName):
-		with open(self.currentConfigPathName, 'w') as outfile:
+				for keys in self.configui.keys():
+					if keys != "foncActi":
+						configFileString=configFileString+keys+":"+str(self.configui[keys])+"\n"
+				outfile.write(configFileString)
+			outfile.close()
 
-			for keys in self.configui.keys():
-				if keys != "foncActi":
-					configFileString=configFileString+keys+":"+str(self.configui[keys])+"\n"
-			outfile.write(configFileString)
-		outfile.close()
-
-		#conf.sauvegardPoids(self.bestReseau,self.currentConfigPathName)
+		configPoids.sauvegardePoids(self.bestReseau,self.currentConfigPathName)
