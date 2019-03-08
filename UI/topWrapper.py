@@ -4,6 +4,7 @@ from tkinter import *
 from tkinter.filedialog import askopenfilename
 import FuncActivation as act
 import numpy as np
+import algo
 import string
 import os
 
@@ -37,9 +38,9 @@ class topWrapper():
 		self.output = np.asarray(self.configSortie)
 
 
-		self.meanPourcentVC
-		self.meanPourcentTEST
-		self.epoque
+		self.meanPourcentVC =0
+		self.meanPourcentTEST=0
+		self.epoqueNumber =0 
 		#network
 		self.bestReseau = classe.reseaux(self.config)
 
@@ -55,6 +56,9 @@ class topWrapper():
 
 	def browse_datasetTrain_path(self):
 		self.datasetTrain_path.set(askopenfilename())
+
+	def browse_load_poids(self):
+		load_poids_path.set(askdirectory ())
 
 
 	def browse_datasetVC_path(self):
@@ -85,6 +89,7 @@ class topWrapper():
 		for keys,conf in zip(configkeys, configlist) :
 			if keys !="foncActi":
 				self.configui[keys] = conf.get()
+				print (conf.get())
 
 		if self.configui["fonctionActivation"]=="sigmoid":
 			self.configui["foncActi"]=act.sigmoid
@@ -105,8 +110,10 @@ class topWrapper():
 		if not os.path.exists(baseConfigName+configLine):
 			os.makedirs(baseConfigName+configLine)
 
-		self.currentConfigPathName=baseConfigName+configLine+"/config.txt"
-		savePathForConfigRM=self.baseConfigName+configLine+"ConfigRM.txt"
+		self.currentConfigPathName=baseConfigName+configLine
+
+		currentConfigPathName=self.currentConfigPathName+"/config.txt"
+		savePathForConfigRM=baseConfigName+"ConfigRM.txt"
 
 		if not os.path.exists(savePathForConfigRM):
 			with open(savePathForConfigRM, 'w') as outfile:
@@ -121,11 +128,13 @@ class topWrapper():
 
 			outfile.close()
 
-		if not os.path.exists(self.currentConfigPathName):
-			with open(self.currentConfigPathName, 'w') as outfile:
+		#if not os.path.exists(self.currentConfigPathName):
+		with open(self.currentConfigPathName, 'w') as outfile:
 
-				for keys in self.configui.keys():
-					if keys != "foncActi":
-						configFileString=configFileString+keys+":"+str(self.configui[keys])+"\n"
-				outfile.write(configFileString)
-			outfile.close()
+			for keys in self.configui.keys():
+				if keys != "foncActi":
+					configFileString=configFileString+keys+":"+str(self.configui[keys])+"\n"
+			outfile.write(configFileString)
+		outfile.close()
+
+		#conf.sauvegardPoids(self.bestReseau,self.currentConfigPathName)
