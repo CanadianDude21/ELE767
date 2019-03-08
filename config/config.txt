@@ -1,6 +1,6 @@
 nombreCoucheCachees:1
 neuroneEntree:500
-neuroneCacher:100
+neuroneCacher:100,50,20
 neuroneSortie:10
 nbTrames:40
 tauxApprentissage:0.1

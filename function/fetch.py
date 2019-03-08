@@ -68,7 +68,7 @@ def getConfig(pathToConfig=""):
 	    k, v = line.strip().split(':')
 	    answer[k.strip()] = v.strip()
 	f.close()
-
+	
 	for keys in answer:
 		if re.search(r'^[-+]?[0-9]+$',answer[keys]):
 			answer[keys]=int(answer[keys])
@@ -82,6 +82,10 @@ def getConfig(pathToConfig=""):
 					answer[keys]=act.tanh
 				else:
 					print("nope")
+
+	answer["neuroneCacher"] = answer["neuroneCacher"].split(",")
+	for element in range(len(answer["neuroneCacher"])):
+		answer["neuroneCacher"][element] = int(answer["neuroneCacher"][element])
 	return answer
 
 

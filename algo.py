@@ -1,4 +1,5 @@
 import random
+import numpy as np
 def apprentissage(reseau,datasetInput,codeOutput,nbrEpoques):
 	i = 0
 	while i<nbrEpoques:
@@ -21,12 +22,13 @@ def VC(reseau,datasetInput,codeOutput):
 		indiceInput = random.randrange(0,len(datasetInput))
 		inputChoisie = np.asarray(datasetInput[indiceInput].data)
 
-		resultatObtenu = bestReseau.test(inputChoisie)
+		resultatObtenu = reseau.test(inputChoisie)
 
 		if(np.argmax(codeOutput[datasetInput[indiceInput].resultat])==np.argmax(resultatObtenu)):
 			nbrReussite+=1
 
 	pourcentageReussite = (nbrReussite/len(datasetInput))*100
+	print(pourcentageReussite)
 
 def test(reseau,datasetInput,codeOutput):
 	print("Test commencé\n")
@@ -35,7 +37,7 @@ def test(reseau,datasetInput,codeOutput):
 		indiceInput = random.randrange(0,len(datasetInput))
 		inputChoisie = np.asarray(datasetInput[indiceInput].data)
 
-		resultatObtenu = bestReseau.test(inputChoisie)
+		resultatObtenu = reseau.test(inputChoisie)
 
 		if(np.argmax(codeOutput[datasetInput[indiceInput].resultat])==np.argmax(resultatObtenu)):
 			nbrReussite+=1
