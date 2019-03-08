@@ -58,7 +58,6 @@ def getEpoque(nombreTrame=60,pathToDataSet=""):
 
 		line_number=line_number+1;
 	f.close()
-	print("done")
 	return listEpoque
 
 def getConfig(pathToConfig=""):

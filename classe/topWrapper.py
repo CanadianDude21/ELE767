@@ -19,11 +19,14 @@ class topWrapper():
 		self.datasetTest_path = StringVar(value="DATA/data_test.txt")
 
 		#config
+		self.pathtosave=""
+		self.configui={}
 		self.config = fetch.getConfig(pathToConfig=self.config_path.get())
-		self.update_config_for_gui()
+		self.update_config_for_gui(self.config)
 		self.configSortie=fetch.getConfigSortie(self.config["FichierConfigSortie"])
 
 		
+
 		#dataset
 		self.datasetTrain = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.datasetTrain_path.get())
 		self.datasetVC = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.datasetVC_path.get())
@@ -61,13 +64,33 @@ class topWrapper():
 
 
 
-	def update_config_for_gui(self):
+	def update_config_for_gui(self,config):
 
-		if self.config["fonctionActivation"]==act.sigmoid:
-			self.config["foncActi"]=act.sigmoid
-			self.config["fonctionActivation"]="sigmoid"
-		elif self.config["fonctionActivation"]==act.tanh:
-			self.config["fonctionActivation"]="tanh"
-			self.config["foncActi"]=act.tanh
+		if config["fonctionActivation"]==act.sigmoid:
+			config["foncActi"]=act.sigmoid
+			config["fonctionActivation"]="sigmoid"
+		elif config["fonctionActivation"]==act.tanh:
+			config["fonctionActivation"]="tanh"
+			config["foncActi"]=act.tanh
 		else:
 			print("nope")
+
+
+
+	def updateCurrentConfig(self,configkeys,configlist):
+		for keys,conf in zip(configkeys, configlist) :
+			if keys !="foncActi":
+				self.configui[keys] = conf.get()
+
+		if self.configui["fonctionActivation"]=="sigmoid":
+			self.configui["foncActi"]=act.sigmoid
+		elif self.configui["fonctionActivation"]=="tanh":
+			self.configui["foncActi"]=act.tanh
+		else:
+			print("nope")
+		print(self.configui)
+
+	def save_config (self):
+
+	#	if not os.path.exists(directory):
+	#   	os.makedirs(directory)
