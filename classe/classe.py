@@ -7,9 +7,15 @@ class reseaux():
 
 		self.config = configOriginal
 
-		self.lay1 = np.random.uniform(-0.1,0.1,(self.config["nbTrames"]*26, self.config["neuroneEntree"]))
-		self.lay2 = np.random.uniform(-0.1,0.1,(self.config["neuroneEntree"], self.config["neuroneCacher"]))
-		self.lay3 = np.random.uniform(-0.1,0.1,(self.config["neuroneCacher"], self.config["neuroneSortie"]))
+		i=0
+		self.lay = []
+		self.lay.append(np.random.uniform(-0.1,0.1,(self.config["nbTrames"]*26, self.config["neuroneEntree"])))
+		self.lay.append(np.random.uniform(-0.1,0.1,(self.config["neuroneEntree"], self.config["neuroneCacher"][i])))
+		i+=1
+		while i <= self.config["nombreCoucheCachees"]-1:	
+			self.lay.append(np.random.uniform(-0.1,0.1,(self.config["neuroneCacher"][i-1], self.config["neuroneCacher"][i])))
+			i+=1
+		self.lay.append(np.random.uniform(-0.1,0.1,(self.config["neuroneCacher"][i-1], self.config["neuroneSortie"])))
 
 	def activation(self,inputs,arrayPoids):
 		return self.config["foncActi"](np.dot(inputs,arrayPoids))
