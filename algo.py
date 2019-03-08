@@ -13,7 +13,7 @@ def apprentissage(reseau,datasetInput,codeOutput,nbrEpoques):
 		print("Époque {} terminer\n".format(i))
 		i+=1
 	print("Sauvegarde des poids")
-	configPoids.sauvegardePoids(reseau)
+	#configPoids.sauvegardePoids(reseau)
 
 def VC(reseau,datasetInput,codeOutput):
 	print("Validation croisée commencée\n")
