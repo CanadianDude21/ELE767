@@ -18,7 +18,8 @@ class reseaux():
 		self.lay.append(np.random.uniform(-0.1,0.1,(self.config["neuroneCacher"][i-1], self.config["neuroneSortie"])))
 
 	def activation(self,inputs,arrayPoids):
-		return self.config["fonctionActivation"](np.dot(inputs,arrayPoids))
+		#return self.config["fonctionActivation"](np.dot(inputs,arrayPoids))
+		return np.dot(inputs,arrayPoids)
 
 	def test(self, input):
 		activations=[]
@@ -35,25 +36,29 @@ class reseaux():
 		activations.append(self.activation(input,self.lay[0]))
 		for i in range(self.config["nombreCoucheCachees"]+1):
 			activations.append(self.activation(activations[i],self.lay[i+1]))
-
+		
+		SortieFuncActivation = []
+		for i in range(len(activations)):
+			sortieFuncActivation.append(self.config["fonctionActivation"](SortieFuncActivation[i]))
+		
 		#Signal d'erreur (Calcul des deltas d'erreur)
-		deltas=[]
-		deltas.insert(0,(outputDesire - activations[-1])*self.config["fonctionActivation"](activations[-1],deriv=True))
-		for i in range(self.config["nombreCoucheCachees"]+1):
-			deltas.insert(0,np.matmul(deltas[-1-i],self.lay[-1-i].T)*self.config["fonctionActivation"](activations[-2-i],deriv=True)) 
+		if self.config["fonctionActivation"] == "sigmoide": #TODO savoir quoi vérifier ici
+			deltas=[]
+			deltas.insert(0,(outputDesire - sortieFuncActivation[-1])*self.config["fonctionActivation"](sortieFuncActivation[-1],deriv=True))
+			for i in range(self.config["nombreCoucheCachees"]+1):
+				deltas.insert(0,np.matmul(deltas[-1-i],self.lay[-1-i].T)*self.config["fonctionActivation"](sortieFuncActivation[-2-i],deriv=True)) 
+		else:
+			deltas=[]
+			deltas.insert(0,(outputDesire - sortieFuncActivation[-1])*self.config["fonctionActivation"](activations[-1],deriv=True))
+			for i in range(self.config["nombreCoucheCachees"]+1):
+				deltas.insert(0,np.matmul(deltas[-1-i],self.lay[-1-i].T)*self.config["fonctionActivation"](activations[-2-i],deriv=True)) 
 
 		#Correction
 		omegasDeltas=[]
 		omegasDeltas.append(self.config["tauxApprentissage"]*np.outer(input, deltas[0]))
 		for i in range(self.config["nombreCoucheCachees"]+1):
 			omegasDeltas.append(self.config["tauxApprentissage"]*np.outer(activations[i], deltas[i+1]))
-		#w1_delta = self.config["tauxApprentissage"]*np.outer(input, l1_delta)
-		#w2_delta = self.config["tauxApprentissage"]*np.outer(l1, l2_delta)
-		#w3_delta = self.config["tauxApprentissage"]*np.outer(l2, l3_delta)
-
+		
 		#actualisation
 		for i in range(self.config["nombreCoucheCachees"]+1):
 			self.lay[i] += omegasDeltas[i]
-		#self.lay1 += w1_delta
-		#self.lay2 += w2_delta
-		#self.lay3 += w3_delta
