@@ -57,7 +57,7 @@ class reseaux():
 		omegasDeltas=[]
 		omegasDeltas.append(self.config["tauxApprentissage"]*np.outer(input, deltas[0]))
 		for i in range(self.config["nombreCoucheCachees"]+1):
-			omegasDeltas.append(self.config["tauxApprentissage"]*np.outer(activations[i], deltas[i+1]))
+			omegasDeltas.append(self.config["tauxApprentissage"]*np.outer(SortieFuncActivation[i], deltas[i+1]))
 		
 		#actualisation
 		for i in range(self.config["nombreCoucheCachees"]+1):
