@@ -26,7 +26,12 @@ class reseaux():
 		activations.append(self.activation(input,self.lay[0]))
 		for i in range(self.config["nombreCoucheCachees"]+1):
 			activations.append(self.activation(activations[i],self.lay[i+1]))
-		return activations[-1] #output obtenue
+		
+		SortieFuncActivation = []
+		for i in range(len(activations)):
+			sortieFuncActivation.append(self.config["fonctionActivation"](SortieFuncActivation[i]))
+		
+		return SortieFuncActivation[-1] #output obtenue
 
 	def train(self, input, outputDesire):
 
