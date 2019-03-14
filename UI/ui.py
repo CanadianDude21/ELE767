@@ -66,7 +66,7 @@ class ui:
 				self.configlist.append(tk.Entry(self.wrapper.root, justify="center",textvariable=tk.StringVar(value=self.wrapper.config[keys])))
 				self.configlist[x].grid(row=2+x,column=7)
 
-
+		self.wrapper.entrys = self.configlist
 
 
 

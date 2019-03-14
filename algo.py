@@ -1,18 +1,18 @@
 import random
 import numpy as np
 def apprentissage(reseau,datasetInput,codeOutput,nbrEpoques):
-	i = 0
-	while i<nbrEpoques:
-		j=0
-		for iteration in range(0,len(datasetInput)):
-			j+=1
-			indiceInput = random.randrange(0,len(datasetInput))
-			inputChoisie = np.asarray(datasetInput[indiceInput].data)
-			outputDesire = codeOutput[datasetInput[indiceInput].resultat]
+	nbrReussite = 0
+	for iteration in range(0,len(datasetInput)):
+		indiceInput = random.randrange(0,len(datasetInput))
+		inputChoisie = np.asarray(datasetInput[indiceInput].data)
+		outputDesire = codeOutput[datasetInput[indiceInput].resultat]
 
-			reseau.train(inputChoisie, outputDesire)
-		print("{} Époque {} terminer\n".format(j,i))
-		i+=1
+		if(np.argmax(codeOutput[datasetInput[indiceInput].resultat])==np.argmax(resultatObtenu)):
+			nbrReussite+=1
+
+		reseau.train(inputChoisie, outputDesire)
+	
+	return nbrReussite,len(datasetInput)
 
 def VC(reseau,datasetInput,codeOutput):
 	print("Validation croisée commencée\n")
@@ -26,8 +26,8 @@ def VC(reseau,datasetInput,codeOutput):
 		if(np.argmax(codeOutput[datasetInput[indiceInput].resultat])==np.argmax(resultatObtenu)):
 			nbrReussite+=1
 
-	pourcentageReussite = (nbrReussite/len(datasetInput))*100
-	print(pourcentageReussite)
+	return   nbrReussite,len(datasetInput)
+	
 
 def test(reseau,datasetInput,codeOutput):
 	print("Test commencé\n")
@@ -41,4 +41,4 @@ def test(reseau,datasetInput,codeOutput):
 		if(np.argmax(codeOutput[datasetInput[indiceInput].resultat])==np.argmax(resultatObtenu)):
 			nbrReussite+=1
 
-	pourcentageReussite = (nbrReussite/len(datasetInput))*100
+	return  nbrReussite,len(datasetInput)

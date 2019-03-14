@@ -14,7 +14,7 @@ class topWrapper():
 
 	def __init__(self):
 		self.root=Tk()
-
+		self.entrys=[]
 		self.config_path = StringVar(value="config/config.txt")
 		self.datasetTrain_path = StringVar(value="DATA/data_train.txt")
 		self.datasetVC_path = StringVar(value="DATA/data_vc.txt")
@@ -23,9 +23,9 @@ class topWrapper():
 		#config
 		self.baseConfigName="SeqConfig/"
 		self.currentConfigPathName=""
-		self.configui={}
 		self.config = fetch.getConfig(pathToConfig=self.config_path.get())
 		self.update_config_for_gui(self.config)
+		self.configui = self.config 
 		self.configSortie=fetch.getConfigSortie(self.config["FichierConfigSortie"])
 
 		
@@ -38,16 +38,24 @@ class topWrapper():
 
 		self.output = np.asarray(self.configSortie)
 
+		self.meanPourcentAPP 	= 0
+		self.meanPourcentVC 	= 0
+		self.meanPourcentTEST 	= 0
 
-		self.meanPourcentVC =0
-		self.meanPourcentTEST=0
-		self.epoqueNumber =0 
+		self.meanPourcentAPP 	= 0
+		self.meanPourcentVC 	= 0
+		self.meanPourcentTEST 	= 0
+
+
+		self.epoqueNumber = 0 
 		#network
 		self.bestReseau = classe.reseaux(self.config)
 
 	# les foncitons ici sont des bouttons
 	def train(self):
-		algo.apprentissage(bestReseau,self.datasetTrain,self.output,nbrEpoques)
+		for nbEpoques in range (1):
+			algo.apprentissage(bestReseau,self.datasetTrain,self.output)
+			self.epoqueNumber += 1
 
 	def VC(self):
 		algo.VC(bestReseau,datasetVC,output)
@@ -72,8 +80,17 @@ class topWrapper():
 
 	def browse_config(self):
 		self.config_path.set(askopenfilename())
+		self.config = fetch.getConfig(pathToConfig=self.config_path.get())
+		self.update_config_for_gui(self.config)
+		self.configui = self.config 
+		self.update_gui_entrys()
+		self.bestReseau = classe.reseaux(self.config)
 
-
+	def update_gui_entrys(self):
+	
+		for keys,entry in zip(self.config.keys(), self.entrys):
+			entry.delete(0,END)		
+			entry.insert(0,self.config[keys])
 
 	def update_config_for_gui(self,config):
 
@@ -91,9 +108,12 @@ class topWrapper():
 	def updateCurrentConfig(self,configkeys,configlist):
 		for keys,conf in zip(configkeys, configlist) :
 			if keys !="foncActi":
-				self.configui[keys] = conf.get()
-				print (conf.get())
+				if keys != "neuroneCacher":
+					self.configui[keys] = conf.get()
+				else:
+					self.configui[keys]=(conf.get()).split(" ")
 
+				
 		if self.configui["fonctionActivation"]=="sigmoid":
 			self.configui["foncActi"]=act.sigmoid
 		elif self.configui["fonctionActivation"]=="tanh":
@@ -109,7 +129,11 @@ class topWrapper():
 
 		for keys in self.configui.keys():
 			if keys != "foncActi":
-				configLine=configLine+str(self.configui[keys])+"_"
+				if type(self.configui[keys])!=list:
+					configLine=configLine+str(self.configui[keys])+"_"
+				else :
+					for element in range(len(self.configui[keys])):
+						configLine=configLine+str(self.configui[keys][element])+" "	
 		if not os.path.exists(baseConfigName+configLine):
 			os.makedirs(baseConfigName+configLine)
 
@@ -134,9 +158,18 @@ class topWrapper():
 			with open(currentConfigPathName, 'w') as outfile:
 
 				for keys in self.configui.keys():
+				#	print("keys:"+keys+"\n")
+					#print("self.configui[keys]:"+str(self.configui[keys])+"\n\n")
 					if keys != "foncActi":
-						configFileString=configFileString+keys+":"+str(self.configui[keys])+"\n"
+						if keys != "neuroneCacher":
+							configFileString=configFileString+keys+":"+str(self.configui[keys])+"\n"
+							#print (configFileString)
+						else :
+							configFileString=configFileString+keys+":"
+							for element in range(len(self.configui[keys])):
+								configFileString=configFileString+str(self.configui[keys][element])+" "	
+							configFileString=configFileString+"\n"
 				outfile.write(configFileString)
 			outfile.close()
 
-		configPoids.sauvegardePoids(self.bestReseau,self.currentConfigPathName)
+		#configPoids.sauvegardePoids(self.bestReseau,self.currentConfigPathName)

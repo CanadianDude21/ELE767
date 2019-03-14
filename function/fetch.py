@@ -86,6 +86,7 @@ def getConfig(pathToConfig=""):
 	answer["neuroneCacher"] = answer["neuroneCacher"].split(" ")
 	for element in range(len(answer["neuroneCacher"])):
 		answer["neuroneCacher"][element] = int(answer["neuroneCacher"][element])
+	print (answer)
 	return answer
 
 
