@@ -11,7 +11,7 @@ def tanh(x,deriv=False):
 		return np.tanh(x) #pas deriver
 	else:
 		return 1.0-np.tanh(x)**2 #deriver
-		
+
 def relu(x,deriv=False):
 	if deriv==False:
 		return np.maximum(x,0,x)

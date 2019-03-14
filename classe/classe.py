@@ -27,11 +27,11 @@ class reseaux():
 		for i in range(self.config["nombreCoucheCachees"]+1):
 			activations.append(self.activation(activations[i],self.lay[i+1]))
 		
-		SortieFuncActivation = []
+		sortieFuncActivation = []
 		for i in range(len(activations)):
-			sortieFuncActivation.append(self.config["fonctionActivation"](SortieFuncActivation[i]))
+			sortieFuncActivation.append(self.config["fonctionActivation"](activations[i]))
 		
-		return SortieFuncActivation[-1] #output obtenue
+		return sortieFuncActivation[-1] #output obtenue
 
 	def train(self, input, outputDesire):
 
@@ -42,12 +42,12 @@ class reseaux():
 		for i in range(self.config["nombreCoucheCachees"]+1):
 			activations.append(self.activation(activations[i],self.lay[i+1]))
 		
-		SortieFuncActivation = []
+		sortieFuncActivation = []
 		for i in range(len(activations)):
-			sortieFuncActivation.append(self.config["fonctionActivation"](SortieFuncActivation[i]))
+			sortieFuncActivation.append(self.config["fonctionActivation"](activations[i]))
 		
 		#Signal d'erreur (Calcul des deltas d'erreur)
-		if self.config["fonctionActivation"] == "sigmoide": #TODO savoir quoi vérifier ici
+		if self.config["fonctionActivation"] == "sigmoid": #TODO savoir quoi vérifier ici
 			deltas=[]
 			deltas.insert(0,(outputDesire - sortieFuncActivation[-1])*self.config["fonctionActivation"](sortieFuncActivation[-1],deriv=True))
 			for i in range(self.config["nombreCoucheCachees"]+1):
@@ -62,7 +62,7 @@ class reseaux():
 		omegasDeltas=[]
 		omegasDeltas.append(self.config["tauxApprentissage"]*np.outer(input, deltas[0]))
 		for i in range(self.config["nombreCoucheCachees"]+1):
-			omegasDeltas.append(self.config["tauxApprentissage"]*np.outer(SortieFuncActivation[i], deltas[i+1]))
+			omegasDeltas.append(self.config["tauxApprentissage"]*np.outer(sortieFuncActivation[i], deltas[i+1]))
 		
 		#actualisation
 		for i in range(self.config["nombreCoucheCachees"]+1):
