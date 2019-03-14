@@ -3,17 +3,16 @@ import numpy as np
 def apprentissage(reseau,datasetInput,codeOutput,nbrEpoques):
 	i = 0
 	while i<nbrEpoques:
+		j=0
 		for iteration in range(0,len(datasetInput)):
-
+			j+=1
 			indiceInput = random.randrange(0,len(datasetInput))
 			inputChoisie = np.asarray(datasetInput[indiceInput].data)
 			outputDesire = codeOutput[datasetInput[indiceInput].resultat]
 
-			bestReseau.train(inputChoisie, outputDesire)
-		print("Époque {} terminer\n".format(i))
+			reseau.train(inputChoisie, outputDesire)
+		print("{} Époque {} terminer\n".format(j,i))
 		i+=1
-	print("Sauvegarde des poids")
-	#configPoids.sauvegardePoids(reseau)
 
 def VC(reseau,datasetInput,codeOutput):
 	print("Validation croisée commencée\n")

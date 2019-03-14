@@ -6,10 +6,7 @@ sys.path.insert(0, "UI/")
 
 from ui import *
 
-
-
 gui=ui()
 
 
 gui.wrapper.root.mainloop()
-
