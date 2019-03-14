@@ -14,7 +14,7 @@ def tanh(x,deriv=False):
 
 def relu(x,deriv=False):
 	if deriv==False:
-		return np.maximum(x,0,x)
+		return np.maximum(x,0)
 	else:
 		x[x<=0] = 0
 		x[x>0] = 1

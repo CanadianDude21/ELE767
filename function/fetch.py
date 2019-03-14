@@ -81,10 +81,12 @@ def getConfig(pathToConfig=""):
 					answer[keys]=act.sigmoid
 				elif answer[keys]=="tanh":
 					answer[keys]=act.tanh
+				elif answer[keys]=="relu":
+					answer[keys]=act.relu
 				else:
 					print("nope")
 
-	answer["neuroneCacher"] = answer["neuroneCacher"].split(",")
+	answer["neuroneCacher"] = answer["neuroneCacher"].split(" ")
 	for element in range(len(answer["neuroneCacher"])):
 		answer["neuroneCacher"][element] = int(answer["neuroneCacher"][element])
 	return answer

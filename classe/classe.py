@@ -18,7 +18,6 @@ class reseaux():
 		self.lay.append(np.random.uniform(-0.1,0.1,(self.config["neuroneCacher"][i-1], self.config["neuroneSortie"])))
 
 	def activation(self,inputs,arrayPoids):
-		#return self.config["fonctionActivation"](np.dot(inputs,arrayPoids))
 		return np.dot(inputs,arrayPoids)
 
 	def test(self, input):
@@ -29,7 +28,7 @@ class reseaux():
 		
 		sortieFuncActivation = []
 		for i in range(len(activations)):
-			sortieFuncActivation.append(self.config["fonctionActivation"](activations[i]))
+			sortieFuncActivation.append(self.config["foncActi"](activations[i]))
 		
 		return sortieFuncActivation[-1] #output obtenue
 
@@ -44,19 +43,19 @@ class reseaux():
 		
 		sortieFuncActivation = []
 		for i in range(len(activations)):
-			sortieFuncActivation.append(self.config["fonctionActivation"](activations[i]))
+			sortieFuncActivation.append(self.config["foncActi"](activations[i]))
 		
 		#Signal d'erreur (Calcul des deltas d'erreur)
-		if self.config["fonctionActivation"] == "sigmoid": #TODO savoir quoi vérifier ici
-			deltas=[]
-			deltas.insert(0,(outputDesire - sortieFuncActivation[-1])*self.config["fonctionActivation"](sortieFuncActivation[-1],deriv=True))
-			for i in range(self.config["nombreCoucheCachees"]+1):
-				deltas.insert(0,np.matmul(deltas[-1-i],self.lay[-1-i].T)*self.config["fonctionActivation"](sortieFuncActivation[-2-i],deriv=True)) 
+		if self.config["fonctionActivation"] == "sigmoid":
+	 		deltas=[]
+	 		deltas.insert(0,(outputDesire - sortieFuncActivation[-1])*self.config["foncActi"](sortieFuncActivation[-1],deriv=True))
+	 		for i in range(self.config["nombreCoucheCachees"]+1):
+	 			deltas.insert(0,np.matmul(deltas[-1-i],self.lay[-1-i].T)*self.config["foncActi"](sortieFuncActivation[-2-i],deriv=True)) 
 		else:
 			deltas=[]
-			deltas.insert(0,(outputDesire - sortieFuncActivation[-1])*self.config["fonctionActivation"](activations[-1],deriv=True))
+			deltas.insert(0,(outputDesire - sortieFuncActivation[-1])*self.config["foncActi"](activations[-1],deriv=True))
 			for i in range(self.config["nombreCoucheCachees"]+1):
-				deltas.insert(0,np.matmul(deltas[-1-i],self.lay[-1-i].T)*self.config["fonctionActivation"](activations[-2-i],deriv=True)) 
+				deltas.insert(0,np.matmul(deltas[-1-i],self.lay[-1-i].T)*self.config["foncActi"](activations[-2-i],deriv=True)) 
 
 		#Correction
 		omegasDeltas=[]
