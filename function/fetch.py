@@ -58,7 +58,6 @@ def getEpoque(nombreTrame=60,pathToDataSet=""):
 
 		line_number=line_number+1;
 	f.close()
-	print("done")
 	return listEpoque
 
 def getConfig(pathToConfig=""):
@@ -84,7 +83,7 @@ def getConfig(pathToConfig=""):
 				else:
 					print("nope")
 
-	answer["neuroneCacher"] = answer["neuroneCacher"].split(",")
+	answer["neuroneCacher"] = answer["neuroneCacher"].split(" ")
 	for element in range(len(answer["neuroneCacher"])):
 		answer["neuroneCacher"][element] = int(answer["neuroneCacher"][element])
 	return answer
