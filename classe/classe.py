@@ -16,25 +16,22 @@ class reseaux():
 			self.lay.append(np.random.uniform(-0.1,0.1,(self.config["neuroneCacher"][i-1], self.config["neuroneCacher"][i])))
 			i+=1
 		self.lay.append(np.random.uniform(-0.1,0.1,(self.config["neuroneCacher"][i-1], self.config["neuroneSortie"])))
-
-		self.omegasDeltasPrecedents=[]
+		self.pourcentageTauxApp = 0.
 	def activation(self,inputs,arrayPoids):
 		return np.dot(inputs,arrayPoids)
 
 	def test(self, input):
 		activations=[]
-		activations.append(self.activation(input,self.lay[0]))
-		for i in range(self.config["nombreCoucheCachees"]+1):
-			activations.append(self.activation(activations[i],self.lay[i+1]))
-		
 		sortieFuncActivation = []
-		for i in range(len(activations)):
-			sortieFuncActivation.append(self.config["foncActi"](activations[i]))
+		activations.append(self.activation(input,self.lay[0]))
+		sortieFuncActivation.append(self.config["fonctionActivation"](activations[0]))
+		for i in range(self.config["nombreCoucheCachees"]+1):
+			activations.append(self.activation(sortieFuncActivation[i],self.lay[i+1]))
+			sortieFuncActivation.append(self.config["fonctionActivation"](activations[i+1]))
 		
 		return sortieFuncActivation[-1] #output obtenue
 
 	def train(self, input, outputDesire,tauxApprVariable=False):
-
 		
 		#Activation
 		activations=[]
@@ -44,7 +41,6 @@ class reseaux():
 		for i in range(self.config["nombreCoucheCachees"]+1):
 			activations.append(self.activation(sortieFuncActivation[i],self.lay[i+1]))
 			sortieFuncActivation.append(self.config["fonctionActivation"](activations[i+1]))
-
 		
 		#Signal d'erreur (Calcul des deltas d'erreur)
 		if self.config["fonctionActivation"] == "sigmoid":
@@ -58,25 +54,18 @@ class reseaux():
 			for i in range(self.config["nombreCoucheCachees"]+1):
 				deltas.insert(0,np.matmul(deltas[-1-i],self.lay[-1-i].T)*self.config["fonctionActivation"](activations[-2-i],deriv=True)) 
 
-		#Correction
+		#Correction taux apprentissage fixe
 		if tauxApprVariable is False:
 			omegasDeltas=[]
 			omegasDeltas.append(self.config["tauxApprentissage"]*np.outer(input, deltas[0]))
 			for i in range(self.config["nombreCoucheCachees"]+1):
 				omegasDeltas.append(self.config["tauxApprentissage"]*np.outer(sortieFuncActivation[i], deltas[i+1]))
+		#Correction taux apprentissage variable
 		else:
-			correctionPartielle=[]
-			correctionPartielle.append(np.outer(input, deltas[0]))
-			for i in range(self.config["nombreCoucheCachees"]+1):
-				correctionPartielle.append(np.outer(sortieFuncActivation[i], deltas[i+1]))
 			
-			listeTaux = []
-			for couche in correctionPartielle:
-				listeTaux.append(np.full(couche.shape,self.config["tauxApprentissage"]))
 			
-			if len(omegasDeltasPrecedents) > 0:
-				for couche in correctionPartielle:
 
 		#actualisation
 		for i in range(self.config["nombreCoucheCachees"]+1):
 			self.lay[i] += omegasDeltas[i]
+		

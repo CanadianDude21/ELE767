@@ -5,7 +5,16 @@ sys.path.insert(0, "function/")
 sys.path.insert(0, "UI/")
 
 from ui import *
+import classe, fetch, algo, configPoids
+import numpy as np
 
+config = fetch.getConfig("config/config.txt")
+configSortie = fetch.getConfigSortie(10)
+donneTrain = fetch.getEpoque(40,"DATA/data_train.txt")
+donneVC = fetch.getEpoque(40,"DATA/data_vc.txt")
+#inputChoisie = np.asarray(donne[0].data)
+output = np.asarray(configSortie)
+#outputDesire = output[donne[0].resultat]
 
 ######test validation croisée
 # reseau0Epoque = classe.reseaux(config)
