@@ -29,7 +29,7 @@ class reseaux():
 		
 		sortieFuncActivation = []
 		for i in range(len(activations)):
-			sortieFuncActivation.append(self.config["fonctionActivation"](activations[i]))
+			sortieFuncActivation.append(self.config["foncActi"](activations[i]))
 		
 		return sortieFuncActivation[-1] #output obtenue
 
@@ -42,8 +42,8 @@ class reseaux():
 		activations.append(self.activation(input,self.lay[0]))
 		sortieFuncActivation.append(self.config["fonctionActivation"](activations[0]))
 		for i in range(self.config["nombreCoucheCachees"]+1):
-			activations.append(self.activation(activations[i],self.lay[i+1]))
-			sortieFuncActivation.append(self.config["fonctionActivation"](activations[i]))
+			activations.append(self.activation(sortieFuncActivation[i],self.lay[i+1]))
+			sortieFuncActivation.append(self.config["fonctionActivation"](activations[i+1]))
 
 		
 		#Signal d'erreur (Calcul des deltas d'erreur)

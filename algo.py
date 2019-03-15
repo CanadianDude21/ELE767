@@ -26,8 +26,8 @@ def VC(reseau,datasetInput,codeOutput):
 		if(np.argmax(codeOutput[datasetInput[indiceInput].resultat])==np.argmax(resultatObtenu)):
 			nbrReussite+=1
 
-	pourcentageReussite = (nbrReussite/len(datasetInput))*100
-	print(pourcentageReussite)
+	return   nbrReussite,len(datasetInput)
+	
 
 def test(reseau,datasetInput,codeOutput):
 	print("Test commencé\n")
@@ -41,4 +41,4 @@ def test(reseau,datasetInput,codeOutput):
 		if(np.argmax(codeOutput[datasetInput[indiceInput].resultat])==np.argmax(resultatObtenu)):
 			nbrReussite+=1
 
-	pourcentageReussite = (nbrReussite/len(datasetInput))*100
+	return  nbrReussite,len(datasetInput)

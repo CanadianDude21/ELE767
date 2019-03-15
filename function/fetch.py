@@ -3,38 +3,38 @@ import sys
 sys.path.insert(0, "function/")
 import FuncActivation as act
 import re
+from collections import OrderedDict
 
 
-class classEpoque():
+class classSample():
 
 	def __init__(self,rawData):
 		self.resultat=0
 		self.data=[]
 		self.rawDataLine=rawData
 
+
 def getEpoque(nombreTrame=60,pathToDataSet=""):
 
-	listEpoque=[]
+	listSamples=[]
 	line_number=0
 	tmplist=[]
 	tmpStr=""
-	modulo=1
 
 	f=open(pathToDataSet,"r")
-	#f=open("DATA/data_train.txt","r")
 	for text_line in f:
 		index=0
-		listEpoque.append(classEpoque(text_line))
-		index=listEpoque[line_number].rawDataLine.index(' ')
-		tmpStr=listEpoque[line_number].rawDataLine[0:index+1] #permet de recuperer le chiffre a predire
-		listEpoque[line_number].rawDataLine = listEpoque[line_number].rawDataLine[index+1:] #retire la prediction de la chaine de donner
+		listSamples.append(classSample(text_line))
+		index=listSamples[line_number].rawDataLine.index(' ')
+		tmpStr= listSamples[line_number].rawDataLine[0:index + 1] #permet de recuperer le chiffre a predire
+		listSamples[line_number].rawDataLine = listSamples[line_number].rawDataLine[index + 1:] #retire la prediction de la chaine de donner
 
 		if tmpStr[:1]=="o":
-			listEpoque[line_number].resultat=0
+			listSamples[line_number].resultat=0
 		else:
-			listEpoque[line_number].resultat=int(tmpStr[:1])
+			listSamples[line_number].resultat=int(tmpStr[:1])
 
-		tmplist=listEpoque[line_number].rawDataLine.split(" ") #transforme la string en une list
+		tmplist=listSamples[line_number].rawDataLine.split(" ") #transforme la string en une list
 		tmplist.pop() # retire le dernier element de la list (\n)
 		tmplistlen=len(tmplist)
 		newtmplist=[]
@@ -52,31 +52,32 @@ def getEpoque(nombreTrame=60,pathToDataSet=""):
 				flat_list.append(item)
 
 		for data in flat_list:
-				listEpoque[line_number].data.append(float(data))
+				listSamples[line_number].data.append(float(data))
 
 
 
 		line_number=line_number+1;
 	f.close()
-	print("done")
-	return listEpoque
+	return listSamples
 
 def getConfig(pathToConfig=""):
 	f=open(pathToConfig,"r")
-	#f=open("config/config.txt","r")
-	answer = {}
+	answer = OrderedDict()
+
+	#converti le fichier config en dictionnaire
 	for line in f:
 	    k, v = line.strip().split(':')
 	    answer[k.strip()] = v.strip()
 	f.close()
 	
 	for keys in answer:
-		if re.search(r'^[-+]?[0-9]+$',answer[keys]):
+		if re.search(r'^[-+]?[0-9]+$',answer[keys]):#trouve les nombres dans les info de la config
 			answer[keys]=int(answer[keys])
 		else:
-			if re.search(r'^[-+]?\d+\.\d+$',answer[keys]):
+			if re.search(r'^[-+]?\d+\.\d+$',answer[keys]):#trouve les nombres a virgule dans les info de la config
 				answer[keys]=float(answer[keys])
 			else:
+				#leger changement pour la fonction d'activation
 				if answer[keys]=="sigmoid":
 					answer[keys]=act.sigmoid
 				elif answer[keys]=="tanh":
@@ -85,7 +86,7 @@ def getConfig(pathToConfig=""):
 					answer[keys]=act.relu
 				else:
 					print("nope")
-
+	#l'entree neurone cacher est mise en list puis sauvegarder dans un element du dictionnaire
 	answer["neuroneCacher"] = answer["neuroneCacher"].split(" ")
 	for element in range(len(answer["neuroneCacher"])):
 		answer["neuroneCacher"][element] = int(answer["neuroneCacher"][element])
@@ -95,6 +96,7 @@ def getConfig(pathToConfig=""):
 def getConfigSortie(nombre):
 	f=open("config/configSortie"+str(nombre)+".txt","r")
 	answer = []
+	#creer une list de list. Chacune des listes correspond a la reponse de sorti des nombre 1 a 9 et o
 	for line in f:
 	    k, v = line.strip().split(':')
 	    answer.append([])
