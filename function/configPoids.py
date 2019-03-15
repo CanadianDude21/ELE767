@@ -3,7 +3,7 @@ np.set_printoptions(threshold=1000000)
 
 def sauvegardePoids(reseau,path):
 	print("début de sauvegarde des poids")
-	for i in range(reseau.config["nombreCoucheCachees"]+2):
+	for i in range(int(reseau.config["nombreCoucheCachees"])+2):
 		data = reseau.lay[i]
 		# Write the array to disk
 		with open(path+"/configPoidsLayer"+str(i)+".txt", 'w') as outfile:

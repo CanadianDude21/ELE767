@@ -51,7 +51,8 @@ class topWrapper():
 		#network
 		self.bestReseau = classe.reseaux(self.config)
 
-	# les foncitons ici sont des bouttons
+	# les foncitons ici sont appeler par les boutons
+
 	def train(self):
 		for nbEpoques in range (1):
 			algo.apprentissage(bestReseau,self.datasetTrain,self.output)
@@ -63,14 +64,13 @@ class topWrapper():
 	def generalisation(self):
 		algo.test(bestReseau,datasetTest,output)
 
+	#les fonctions suivantes sont utiliser pour allez chercher des fichiers
 	def browse_datasetTrain_path(self):
 		self.datasetTrain_path.set(askopenfilename())
 
 	def browse_load_poids(self):
 		load_poids_path = askdirectory ()
 		configPoids.chargerPoids(self.bestReseau,load_poids_path)
-		
-
 
 	def browse_datasetVC_path(self):
 		self.datasetVC_path.set(askopenfilename())
@@ -86,41 +86,8 @@ class topWrapper():
 		self.update_gui_entrys()
 		self.bestReseau = classe.reseaux(self.config)
 
-	def update_gui_entrys(self):
-	
-		for keys,entry in zip(self.config.keys(), self.entrys):
-			entry.delete(0,END)		
-			entry.insert(0,self.config[keys])
-
-	def update_config_for_gui(self,config):
-
-		if config["fonctionActivation"]==act.sigmoid:
-			config["foncActi"]=act.sigmoid
-			config["fonctionActivation"]="sigmoid"
-		elif config["fonctionActivation"]==act.tanh:
-			config["fonctionActivation"]="tanh"
-			config["foncActi"]=act.tanh
-		else:
-			print("nope")
-
-
-
-	def updateCurrentConfig(self,configkeys,configlist):
-		for keys,conf in zip(configkeys, configlist) :
-			if keys !="foncActi":
-				if keys != "neuroneCacher":
-					self.configui[keys] = conf.get()
-				else:
-					self.configui[keys]=(conf.get()).split(" ")
-
-				
-		if self.configui["fonctionActivation"]=="sigmoid":
-			self.configui["foncActi"]=act.sigmoid
-		elif self.configui["fonctionActivation"]=="tanh":
-			self.configui["foncActi"]=act.tanh
-		else:
-			print("nope")
-
+	#fonctions de sauvegarde de la config entree par lutilisateur
+	# cette fonction est connecter au boutons de l'interface graphique
 	def save_config (self):
 
 		baseConfigName=self.baseConfigName
@@ -158,12 +125,9 @@ class topWrapper():
 			with open(currentConfigPathName, 'w') as outfile:
 
 				for keys in self.configui.keys():
-				#	print("keys:"+keys+"\n")
-					#print("self.configui[keys]:"+str(self.configui[keys])+"\n\n")
 					if keys != "foncActi":
 						if keys != "neuroneCacher":
 							configFileString=configFileString+keys+":"+str(self.configui[keys])+"\n"
-							#print (configFileString)
 						else :
 							configFileString=configFileString+keys+":"
 							for element in range(len(self.configui[keys])):
@@ -172,4 +136,38 @@ class topWrapper():
 				outfile.write(configFileString)
 			outfile.close()
 
-		#configPoids.sauvegardePoids(self.bestReseau,self.currentConfigPathName)
+		configPoids.sauvegardePoids(self.bestReseau,self.currentConfigPathName)
+
+
+	#fonctions local utilisees par la classe
+	def update_gui_entrys(self):
+
+		for keys, entry in zip(self.config.keys(), self.entrys):
+			entry.delete(0, END)
+			entry.insert(0, self.config[keys])
+
+	def update_config_for_gui(self, config):
+
+		if config["fonctionActivation"] == act.sigmoid:
+			config["foncActi"] = act.sigmoid
+			config["fonctionActivation"] = "sigmoid"
+		elif config["fonctionActivation"] == act.tanh:
+			config["fonctionActivation"] = "tanh"
+			config["foncActi"] = act.tanh
+		else:
+			print("nope")
+
+	def updateCurrentConfig(self, configkeys, configlist):
+		for keys, conf in zip(configkeys, configlist):
+			if keys != "foncActi":
+				if keys != "neuroneCacher":
+					self.configui[keys] = conf.get()
+				else:
+					self.configui[keys] = (conf.get()).split(" ")
+
+		if self.configui["fonctionActivation"] == "sigmoid":
+			self.configui["foncActi"] = act.sigmoid
+		elif self.configui["fonctionActivation"] == "tanh":
+			self.configui["foncActi"] = act.tanh
+		else:
+			print("nope")
