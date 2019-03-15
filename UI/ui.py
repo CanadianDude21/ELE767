@@ -15,24 +15,28 @@ class ui:
 		#montre les differents fichiers necessaires ainsi que ceux qui sont actuellement utiliser par le programme
 		configPathLabel = tk.Label(self.wrapper.root,justify="left", anchor='nw',text="configPath:")
 		configPathLabel.grid(row=1,column=0)
-		configPathLabelVar = tk.Label(self.wrapper.root, textvariable=self.wrapper.config_path,justify="left", anchor='nw')
+		configPathLabelVar = tk.Label(self.wrapper.root, textvariable=self.wrapper.gui_config_path,justify="left", anchor='nw')
 		configPathLabelVar.grid(row=1,column=1)
 		tk.Label(self.wrapper.root,justify="left", anchor='nw',text="datasetTrainPath:").grid(row=2,column=0)
-		tk.Label(self.wrapper.root, textvariable=self.wrapper.datasetTrain_path,justify="left", anchor='nw').grid(row=2,column=1,columnspan=3)
+		tk.Label(self.wrapper.root, textvariable=self.wrapper.gui_datasetTrain_path,justify="left", anchor='nw').grid(row=2,column=1,columnspan=3)
 		tk.Label(self.wrapper.root,justify="left", anchor='nw',text="datasetVC_path:").grid(row=3,column=0)
-		tk.Label(self.wrapper.root, textvariable=self.wrapper.datasetVC_path,justify="left", anchor='nw').grid(row=3,column=1,columnspan=3)
+		tk.Label(self.wrapper.root, textvariable=self.wrapper.gui_datasetVC_path,justify="left", anchor='nw').grid(row=3,column=1,columnspan=3)
 		tk.Label(self.wrapper.root,justify="left", anchor='nw',text="datasetTest_path:").grid(row=4,column=0)
-		tk.Label(self.wrapper.root, textvariable=self.wrapper.datasetTest_path,justify="left", anchor='nw').grid(row=4,column=1,columnspan=3)
-
+		tk.Label(self.wrapper.root, textvariable=self.wrapper.gui_datasetTest_path,justify="left", anchor='nw').grid(row=4,column=1,columnspan=3)
+		tk.Label(self.wrapper.root,justify="left", anchor='nw',text="datasetVC_path:").grid(row=3,column=0)
 
 
 		#cree les boutons principaux sur l'interface graphique
 		tk.Button(self.wrapper.root, text="Train", command=self.wrapper.train).grid(row=30 ,column=2)
+		tk.Label(self.wrapper.root, anchor='nw',textvariable=self.wrapper.gui_meanPourcentAPP).grid(row=30,column=3,columnspan=3)
 		tk.Button(self.wrapper.root, text="TrainVc", command=self.wrapper.VC).grid(row=31 ,column=2)
-		tk.Label(self.wrapper.root, anchor='nw',textvariable=tk.StringVar(value=self.wrapper.meanPourcentVC)).grid(row=31,column=3,columnspan=3)
+		tk.Label(self.wrapper.root, anchor='nw',textvariable=self.wrapper.gui_meanPourcentVC).grid(row=31,column=3,columnspan=3)
 		tk.Button(self.wrapper.root, text="generalisation", command=self.wrapper.generalisation).grid(row=32 ,column=2)
-		tk.Label(self.wrapper.root, anchor='nw',textvariable=tk.StringVar(value=self.wrapper.meanPourcentTEST)).grid(row=32,column=4,columnspan=3)
+		tk.Label(self.wrapper.root, anchor='nw',textvariable=self.wrapper.gui_meanPourcentTEST).grid(row=32,column=4,columnspan=3)
 		tk.Button(self.wrapper.root, text="Quit", command=self.wrapper.root.destroy).grid(row=33 ,column=2)
+
+
+		tk.Checkbutton(self.wrapper.root, text="Taux App variable", variable=self.wrapper.gui_TauAppVar).grid(row=30, column=1)
 
 
 		#boutons de sauvegarde pour la configuration du reseaux de neurones
@@ -40,6 +44,11 @@ class ui:
 		tk.Button(self.wrapper.root, text="save Current Config", height = 5, width = 20, command=self.wrapper.save_config).grid(columnspan=3,row=33,column=33)
 
 
+
+		tk.Label(self.wrapper.root,justify="left", anchor='nw',text="EpoquesCourante").grid(row=28,column=2)
+		tk.Label(self.wrapper.root, justify="center",textvariable=self.wrapper.gui_epoqueNumber).grid(row=28,column=3)
+		tk.Label(self.wrapper.root,justify="left", anchor='nw',text="nbrEpoques").grid(row=29,column=2)
+		tk.Entry(self.wrapper.root, justify="center",textvariable=self.wrapper.gui_nbrEpoquestr).grid(row=29,column=3)
 
 		#genere les entres pouvant etre modifier par l'utilisateur
 		x=0

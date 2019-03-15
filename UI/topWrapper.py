@@ -15,15 +15,21 @@ class topWrapper():
 	def __init__(self):
 		self.root=Tk()
 		self.entrys=[]
-		self.config_path = StringVar(value="config/config.txt")
-		self.datasetTrain_path = StringVar(value="DATA/data_train.txt")
-		self.datasetVC_path = StringVar(value="DATA/data_vc.txt")
-		self.datasetTest_path = StringVar(value="DATA/data_test.txt")
+		self.gui_config_path 		= StringVar(value="config/config.txt")
+		self.gui_datasetTrain_path 	= StringVar(value="DATA/data_train.txt")
+		self.gui_datasetVC_path 	= StringVar(value="DATA/data_vc.txt")
+		self.gui_datasetTest_path 	= StringVar(value="DATA/data_test.txt")
+		self.gui_nbrEpoquestr 		= StringVar(value="0")
+		self.gui_TauAppVar		 	= IntVar()
+		self.gui_meanPourcentAPP 	= DoubleVar()
+		self.gui_meanPourcentVC 	= DoubleVar()
+		self.gui_meanPourcentTEST	= DoubleVar()
+		self.gui_epoqueNumber		= IntVar()
 
 		#config
 		self.baseConfigName="SeqConfig/"
 		self.currentConfigPathName=""
-		self.config = fetch.getConfig(pathToConfig=self.config_path.get())
+		self.config = fetch.getConfig(pathToConfig=self.gui_config_path.get())
 		self.update_config_for_gui(self.config)
 		self.configui = self.config 
 		self.configSortie=fetch.getConfigSortie(self.config["FichierConfigSortie"])
@@ -31,60 +37,94 @@ class topWrapper():
 		
 
 		#dataset
-		self.datasetTrain = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.datasetTrain_path.get())
-		self.datasetVC = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.datasetVC_path.get())
-		self.datasetTest = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.datasetTrain_path.get())
+		self.datasetTrain = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.gui_datasetTrain_path.get())
+		self.datasetVC = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.gui_datasetVC_path.get())
+		self.datasetTest = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.gui_datasetTrain_path.get())
 		
 
 		self.output = np.asarray(self.configSortie)
 
-		self.meanPourcentAPP 	= 0
-		self.meanPourcentVC 	= 0
-		self.meanPourcentTEST 	= 0
+		#
+		self.meanPourcentAPP = 0.0
+		self.meanPourcentVC = 0.1
+		self.meanPourcentTEST= 0.2
 
-		self.meanPourcentAPP 	= 0
-		self.meanPourcentVC 	= 0
-		self.meanPourcentTEST 	= 0
+		self.nbrReussiteVc = 0
+		self.nbrReussiteTEST = 0
 
-
-		self.epoqueNumber = 0 
+		self.totalVC 	= 0
+		self.totalTEST 	= 0
+		self.TauAppVar 	= False
+		self.epoqueNumber =0
 		#network
 		self.bestReseau = classe.reseaux(self.config)
 
-	# les foncitons ici sont appeler par les boutons
+	# les fonctions ici sont appeler par les boutons
 
 	def train(self):
-		for nbEpoques in range (1):
-			algo.apprentissage(bestReseau,self.datasetTrain,self.output)
+		self.epoqueNumber =0
+		self.gui_meanPourcentTEST.set(self.epoqueNumber)
+		self.TauAppVar=bool(self.gui_TauAppVar.get())
+		print (len(self.datasetTrain[0].data))
+		for nbEpoques in range (int(self.gui_nbrEpoquestr.get())):
+			self.meanPourcentAPP = algo.apprentissage(self.bestReseau,self.datasetTrain,self.output,self.TauAppVar,self.epoqueNumber)
+			for x in range (2):
+				nbrReussiteVc, totalVC =algo.VC(self.bestReseau,self.datasetVC,self.output)
+				self.totalVC +=totalVC
+				self.nbrReussiteVc += nbrReussiteVc
+			for x in range (2):
+				nbrReussiteTEST, totalTEST =algo.test(self.bestReseau,self.datasetTest,self.output)
+				self.totalTEST +=totalTEST
+				self.nbrReussiteTEST += nbrReussiteTEST
+			self.meanPourcentVC=self.nbrReussiteVc/self.totalVC
+			self.meanPourcentTEST=self.nbrReussiteTEST/self.totalTEST
+			self.gui_meanPourcentAPP.set(self.meanPourcentAPP)
+			self.gui_meanPourcentVC.set(self.meanPourcentVC)
+			self.gui_meanPourcentTEST.set(self.meanPourcentTEST)
+			self.meanPourcentVC = 0
+			self.nbrReussiteTEST= 0
+			self.totalVC = 0
+			self.totalTEST = 0
 			self.epoqueNumber += 1
+			self.gui_meanPourcentTEST.set(self.epoqueNumber)
 
 	def VC(self):
-		algo.VC(bestReseau,datasetVC,output)
+		algo.VC(self.bestReseau,self.datasetVC,self.output)
 
 	def generalisation(self):
-		algo.test(bestReseau,datasetTest,output)
+		algo.test(self.bestReseau,self.datasetTest,self.output)
 
 	#les fonctions suivantes sont utiliser pour allez chercher des fichiers
-	def browse_datasetTrain_path(self):
-		self.datasetTrain_path.set(askopenfilename())
-
 	def browse_load_poids(self):
 		load_poids_path = askdirectory ()
 		configPoids.chargerPoids(self.bestReseau,load_poids_path)
 
+	def browse_datasetTrain_path(self):
+		self.gui_datasetTrain_path.set(askopenfilename())
+		self.datasetTrain = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.gui_datasetTrain_path.get())
+
+
 	def browse_datasetVC_path(self):
-		self.datasetVC_path.set(askopenfilename())
+		self.gui_datasetVC_path.set(askopenfilename())
+		self.datasetVC = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.gui_datasetVC_path.get())
 
 	def browse_datasetTest_path(self):
-		self.datasetTest_path.set(askopenfilename())
+		self.gui_datasetTest_path.set(askopenfilename())
+		self.datasetTest = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.gui_datasetTrain_path.get())
+
 
 	def browse_config(self):
-		self.config_path.set(askopenfilename())
-		self.config = fetch.getConfig(pathToConfig=self.config_path.get())
+		self.gui_config_path.set(askopenfilename())
+		self.config = fetch.getConfig(pathToConfig=self.gui_config_path.get())
 		self.update_config_for_gui(self.config)
 		self.configui = self.config 
 		self.update_gui_entrys()
+		print (len(self.datasetTrain[0].data))
+		self.datasetTrain = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.gui_datasetTrain_path.get())
+		self.datasetVC = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.gui_datasetVC_path.get())
+		self.datasetTest = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.gui_datasetTrain_path.get())
 		self.bestReseau = classe.reseaux(self.config)
+		
 
 	#fonctions de sauvegarde de la config entree par lutilisateur
 	# cette fonction est connecter au boutons de l'interface graphique
@@ -161,7 +201,7 @@ class topWrapper():
 		for keys, conf in zip(configkeys, configlist):
 			if keys != "foncActi":
 				if keys != "neuroneCacher":
-					self.configui[keys] = conf.get()
+					self.configui[keys] = conf.get()#
 				else:
 					self.configui[keys] = (conf.get()).split(" ")
 
