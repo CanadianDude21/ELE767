@@ -10,7 +10,7 @@ def apprentissage(reseau,datasetInput,codeOutput,nbrEpoques):
 			inputChoisie = np.asarray(datasetInput[indiceInput].data)
 			outputDesire = codeOutput[datasetInput[indiceInput].resultat]
 
-			reseau.train(inputChoisie, outputDesire)
+			reseau.train(inputChoisie, outputDesire,True)
 		print("{} Époque {} terminer\n".format(j,i))
 		i+=1
 
