@@ -16,7 +16,7 @@ def apprentissage(reseau,datasetInput,codeOutput,tauxAppr):
 	return (nbrReussite/len(datasetInput))
 
 def VC(reseau,datasetInput,codeOutput):
-	print("Validation croisée commencée\n")
+
 	nbrReussite = 0
 	for iteration in range(0,len(datasetInput)):
 		indiceInput = random.randrange(0,len(datasetInput))
@@ -31,7 +31,6 @@ def VC(reseau,datasetInput,codeOutput):
 	
 
 def test(reseau,datasetInput,codeOutput):
-	print("Test commencé\n")
 	nbrReussite = 0
 	for iteration in range(0,len(datasetInput)):
 		indiceInput = random.randrange(0,len(datasetInput))

@@ -46,7 +46,7 @@ class reseaux():
 			sortieFuncActivation.append(self.config["foncActi"](activations[i+1]))
 		
 		#Signal d'erreur (Calcul des deltas d'erreur)
-		if self.config["fonctionActivation"] == "sigmoid": #TODO savoir quoi vérifier ici
+		if self.config["fonctionActivation"] == "sigmoid":
 			deltas=[]
 			deltas.insert(0,(outputDesire - sortieFuncActivation[-1])*self.config["foncActi"](sortieFuncActivation[-1],deriv=True))
 			for i in range(self.config["nombreCoucheCachees"]+1):

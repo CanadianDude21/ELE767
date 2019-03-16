@@ -66,10 +66,10 @@ def getConfig(pathToConfig=""):
 
 	#converti le fichier config en dictionnaire
 	for line in f:
-	    k, v = line.strip().split(':')
-	    answer[k.strip()] = v.strip()
+		k, v = line.strip().split(':')
+		answer[k.strip()] = v.strip()
 	f.close()
-	
+
 	for keys in answer:
 		if re.search(r'^[-+]?[0-9]+$',answer[keys]):#trouve les nombres dans les info de la config
 			answer[keys]=int(answer[keys])
@@ -86,9 +86,12 @@ def getConfig(pathToConfig=""):
 					print("nope")
 
 	#l'entree neurone cacher est mise en list puis sauvegarder dans un element du dictionnaire
-	answer["neuroneCacher"] = answer["neuroneCacher"].split(" ")
-	for element in range(len(answer["neuroneCacher"])):
-		answer["neuroneCacher"][element] = int(answer["neuroneCacher"][element])
+	if str(answer["neuroneCacher"]).find(" ")!=-1:
+		answer["neuroneCacher"] = answer["neuroneCacher"].split(" ")
+		for element in range(len(answer["neuroneCacher"])):
+			answer["neuroneCacher"][element] = int(answer["neuroneCacher"][element])
+	else:
+		answer["neuroneCacher"]=[int(answer["neuroneCacher"])]
 	return answer
 
 

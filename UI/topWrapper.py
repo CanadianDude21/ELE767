@@ -49,7 +49,7 @@ class topWrapper():
 		self.meanPourcentVC = 0.1
 		self.meanPourcentTEST= 0.2
 
-		self.nbrReussiteVc = 0
+		self.nbrReussiteVC = 0
 		self.nbrReussiteTEST = 0
 
 		self.totalVC 	= 0
@@ -67,26 +67,31 @@ class topWrapper():
 		self.TauAppVar=bool(self.gui_TauAppVar.get())
 		print (len(self.datasetTrain[0].data))
 		for nbEpoques in range (int(self.gui_nbrEpoquestr.get())):
-			self.meanPourcentAPP = algo.apprentissage(self.bestReseau,self.datasetTrain,self.output,self.TauAppVar,self.epoqueNumber)
-			for x in range (2):
+			self.meanPourcentAPP = algo.apprentissage(self.bestReseau,self.datasetTrain,self.output,self.TauAppVar)
+			for x in range (5):
 				nbrReussiteVc, totalVC =algo.VC(self.bestReseau,self.datasetVC,self.output)
-				self.totalVC +=totalVC
-				self.nbrReussiteVc += nbrReussiteVc
-			for x in range (2):
+				self.totalVC += totalVC
+				self.nbrReussiteVC += nbrReussiteVc
+			for x in range (5):
 				nbrReussiteTEST, totalTEST =algo.test(self.bestReseau,self.datasetTest,self.output)
-				self.totalTEST +=totalTEST
+				self.totalTEST += totalTEST
 				self.nbrReussiteTEST += nbrReussiteTEST
-			self.meanPourcentVC=self.nbrReussiteVc/self.totalVC
+			self.meanPourcentVC=self.nbrReussiteVC/self.totalVC
 			self.meanPourcentTEST=self.nbrReussiteTEST/self.totalTEST
 			self.gui_meanPourcentAPP.set(self.meanPourcentAPP)
 			self.gui_meanPourcentVC.set(self.meanPourcentVC)
 			self.gui_meanPourcentTEST.set(self.meanPourcentTEST)
-			self.meanPourcentVC = 0
+			self.epoqueNumber += 1
+			self.gui_epoqueNumber.set(self.epoqueNumber)
+			self.root.update()
+			print("======== epoqueNumber:" + str(self.epoqueNumber) + "========\n")
+			print("meanPourcentAPP:" + str(self.meanPourcentAPP) + "\n")
+			print("meanPourcentVC:" + str(self.meanPourcentVC) + "\n")
+			print("meanPourcentTEST:" + str(self.meanPourcentTEST) + "\n")
+			self.nbrReussiteVC = 0
 			self.nbrReussiteTEST= 0
 			self.totalVC = 0
 			self.totalTEST = 0
-			self.epoqueNumber += 1
-			self.gui_meanPourcentTEST.set(self.epoqueNumber)
 
 	def VC(self):
 		algo.VC(self.bestReseau,self.datasetVC,self.output)
@@ -202,8 +207,13 @@ class topWrapper():
 			if keys != "foncActi":
 				if keys != "neuroneCacher":
 					self.configui[keys] = conf.get()#
+					if re.search(r'^[-+]?[0-9]+$', self.configui[keys]):  # trouve les nombres dans les info de la config
+						self.configui[keys] = int(self.configui[keys])
+					else:
+						if re.search(r'^[-+]?\d+\.\d+$', self.configui[keys]):  # trouve les nombres a virgule dans les info de la config
+							self.configui[keys]= float(self.configui[keys])
 				else:
-					self.configui[keys] = (conf.get()).split(" ")
+					self.configui[keys] = [int(x) for x in (conf.get()).split(" ") ]
 
 		if self.configui["fonctionActivation"] == "sigmoid":
 			self.configui["foncActi"] = act.sigmoid
@@ -211,3 +221,12 @@ class topWrapper():
 			self.configui["foncActi"] = act.tanh
 		else:
 			print("nope")
+
+		self.configui = self.config
+		self.datasetTrain = fetch.getEpoque(nombreTrame=self.config["nbTrames"],
+											pathToDataSet=self.gui_datasetTrain_path.get())
+		self.datasetVC = fetch.getEpoque(nombreTrame=self.config["nbTrames"],
+										 pathToDataSet=self.gui_datasetVC_path.get())
+		self.datasetTest = fetch.getEpoque(nombreTrame=self.config["nbTrames"],
+										   pathToDataSet=self.gui_datasetTrain_path.get())
+		self.bestReseau = classe.reseaux(self.config)
