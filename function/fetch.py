@@ -82,9 +82,10 @@ def getConfig(pathToConfig=""):
 					answer[keys]=act.sigmoid
 				elif answer[keys]=="tanh":
 					answer[keys]=act.tanh
+				elif answer[keys]=="relu":
+					answer[keys]=act.relu
 				else:
 					print("nope")
-
 	#l'entree neurone cacher est mise en list puis sauvegarder dans un element du dictionnaire
 	if str(answer["neuroneCacher"]).find(" ")!=-1:
 		answer["neuroneCacher"] = answer["neuroneCacher"].split(" ")
