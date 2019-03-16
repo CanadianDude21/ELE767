@@ -63,8 +63,12 @@ class topWrapper():
 
 	def train(self):
 		self.epoqueNumber =0
+		self.gui_epoqueNumber.set(self.epoqueNumber)
+		self.root.update()
+
 		self.gui_meanPourcentTEST.set(self.epoqueNumber)
 		self.TauAppVar=bool(self.gui_TauAppVar.get())
+
 		print (len(self.datasetTrain[0].data))
 		for nbEpoques in range (int(self.gui_nbrEpoquestr.get())):
 			self.meanPourcentAPP = algo.apprentissage(self.bestReseau,self.datasetTrain,self.output,self.TauAppVar)
@@ -97,8 +101,16 @@ class topWrapper():
 		algo.VC(self.bestReseau,self.datasetVC,self.output)
 
 	def generalisation(self):
-		algo.test(self.bestReseau,self.datasetTest,self.output)
-
+		for x in range(5):
+			nbrReussiteTEST, totalTEST = algo.test(self.bestReseau, self.datasetTest, self.output)
+			self.totalTEST += totalTEST
+			self.nbrReussiteTEST += nbrReussiteTEST
+			self.meanPourcentTEST = self.nbrReussiteTEST / self.totalTEST
+			self.gui_meanPourcentTEST.set(self.meanPourcentTEST)
+			self.root.update()
+			print("meanPourcentTEST:" + str(self.meanPourcentTEST) + "\n")
+			self.nbrReussiteTEST = 0
+			self.totalTEST = 0
 	#les fonctions suivantes sont utiliser pour allez chercher des fichiers
 	def browse_load_poids(self):
 		load_poids_path = askdirectory ()
