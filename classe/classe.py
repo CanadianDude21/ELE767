@@ -2,11 +2,13 @@ import numpy as np
 import random
 
 class reseaux():
-
+	#constructeur du réseau
+	#on doit lui passer la config
 	def __init__(self,configOriginal):
 
 		self.config = configOriginal
-		
+
+		#initialise les matrices de poids de liens entre -0.1 et 0.1
 		i=0
 		self.lay = []
 		self.lay.append(np.random.uniform(-0.1,0.1,(self.config["nbTrames"]*26, self.config["neuroneEntree"])))
@@ -17,12 +19,15 @@ class reseaux():
 			i+=1
 		self.lay.append(np.random.uniform(-0.1,0.1,(self.config["neuroneCacher"][i-1], self.config["neuroneSortie"])))
 
+		#on met la constante de momentum à 0.5
 		self.momentum = 0.5
 		self.omegasDeltasPrec = []
 
+	#retourne la valeur d'activation des neurones avant d'appliquer la fonction d'activation
 	def activation(self,inputs,arrayPoids):
 		return np.dot(inputs,arrayPoids)
 
+	#retourne la sortie obtenue d'un set de donnée en entrée
 	def test(self, input):
 		#Activation
 		activations=[]
@@ -35,7 +40,8 @@ class reseaux():
 		
 		return sortieFuncActivation[-1] #output obtenue
 
-
+	#le réseau apprend selon un set de données d'entrée
+	#on peut choisir d'appliquer le momentum ou non
 	def train(self, input, outputDesire, momentum=False):
 		
 		#Activation
@@ -66,6 +72,7 @@ class reseaux():
 			omegasDeltas.append(self.config["tauxApprentissage"]*np.outer(input, deltas[0]))
 			for i in range(self.config["nombreCoucheCachees"]+1):
 				omegasDeltas.append(self.config["tauxApprentissage"]*np.outer(sortieFuncActivation[i], deltas[i+1]))
+
 		#Correction avec momentum
 		else:
 			if len(self.omegasDeltasPrec) > 0:
