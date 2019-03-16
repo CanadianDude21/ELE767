@@ -1,6 +1,6 @@
 import random
 import numpy as np
-def apprentissage(reseau,datasetInput,codeOutput,tauxAppr):
+def apprentissage(reseau,datasetInput,codeOutput,momentum):
 	nbrReussite = 0
 	for iteration in range(0,len(datasetInput)):
 		indiceInput = random.randrange(0,len(datasetInput))
@@ -8,7 +8,7 @@ def apprentissage(reseau,datasetInput,codeOutput,tauxAppr):
 		outputDesire = codeOutput[datasetInput[indiceInput].resultat]
 
 
-		resultatObtenu = reseau.train(inputChoisie, outputDesire,tauxAppr)
+		resultatObtenu = reseau.train(inputChoisie, outputDesire,momentum)
 
 		if(np.argmax(codeOutput[datasetInput[indiceInput].resultat])==np.argmax(resultatObtenu)):
 			nbrReussite+=1

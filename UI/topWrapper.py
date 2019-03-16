@@ -8,7 +8,7 @@ import numpy as np
 import algo
 import string
 import os
-
+import time
 
 class topWrapper():
 
@@ -20,7 +20,7 @@ class topWrapper():
 		self.gui_datasetVC_path 	= StringVar(value="DATA/data_vc.txt")
 		self.gui_datasetTest_path 	= StringVar(value="DATA/data_test.txt")
 		self.gui_nbrEpoquestr 		= StringVar(value="0")
-		self.gui_TauAppVar		 	= IntVar()
+		self.gui_momentum		 	= IntVar()
 		self.gui_meanPourcentAPP 	= DoubleVar()
 		self.gui_meanPourcentVC 	= DoubleVar()
 		self.gui_meanPourcentTEST	= DoubleVar()
@@ -44,7 +44,10 @@ class topWrapper():
 
 		self.output = np.asarray(self.configSortie)
 
-		#
+		#timeoutvalue
+		self.timeout=time.time() + 60*5 # 60 secondes fois 5 .... 5 minutes !
+
+		#valeurs moyennes
 		self.meanPourcentAPP = 0.0
 		self.meanPourcentVC = 0.1
 		self.meanPourcentTEST= 0.2
@@ -54,7 +57,7 @@ class topWrapper():
 
 		self.totalVC 	= 0
 		self.totalTEST 	= 0
-		self.TauAppVar 	= False
+		self.momentum 	= False
 		self.epoqueNumber =0
 		#network
 		self.bestReseau = classe.reseaux(self.config)
@@ -67,11 +70,11 @@ class topWrapper():
 		self.root.update()
 
 		self.gui_meanPourcentTEST.set(self.epoqueNumber)
-		self.TauAppVar=bool(self.gui_TauAppVar.get())
+		self.momentum=bool(self.gui_momentum.get())
 
 		print (len(self.datasetTrain[0].data))
 		for nbEpoques in range (int(self.gui_nbrEpoquestr.get())):
-			self.meanPourcentAPP = algo.apprentissage(self.bestReseau,self.datasetTrain,self.output,self.TauAppVar)
+			self.meanPourcentAPP = algo.apprentissage(self.bestReseau,self.datasetTrain,self.output,self.momentum)
 			for x in range (5):
 				nbrReussiteVc, totalVC =algo.VC(self.bestReseau,self.datasetVC,self.output)
 				self.totalVC += totalVC
@@ -96,6 +99,10 @@ class topWrapper():
 			self.nbrReussiteTEST= 0
 			self.totalVC = 0
 			self.totalTEST = 0
+			if time.time()>self.timeout:
+				print("\n\nIt seems stuck let's stop it.\n\n")
+				break
+
 
 	def VC(self):
 		algo.VC(self.bestReseau,self.datasetVC,self.output)
