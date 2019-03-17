@@ -12,12 +12,15 @@ class reseaux():
 		i=0
 		self.lay = []
 		self.lay.append(np.random.uniform(-0.1,0.1,(self.config["nbTrames"]*26, self.config["neuroneEntree"])))
-		self.lay.append(np.random.uniform(-0.1,0.1,(self.config["neuroneEntree"], self.config["neuroneCacher"][i])))
-		i+=1
-		while i <= self.config["nombreCoucheCachees"]-1:	
-			self.lay.append(np.random.uniform(-0.1,0.1,(self.config["neuroneCacher"][i-1], self.config["neuroneCacher"][i])))
+		if self.config["nombreCoucheCachees"] > 0:
+			self.lay.append(np.random.uniform(-0.1,0.1,(self.config["neuroneEntree"], self.config["neuroneCacher"][i])))
 			i+=1
-		self.lay.append(np.random.uniform(-0.1,0.1,(self.config["neuroneCacher"][i-1], self.config["neuroneSortie"])))
+			while i <= self.config["nombreCoucheCachees"]-1:
+				self.lay.append(np.random.uniform(-0.1,0.1,(self.config["neuroneCacher"][i-1], self.config["neuroneCacher"][i])))
+				i+=1
+			self.lay.append(np.random.uniform(-0.1,0.1,(self.config["neuroneCacher"][i-1], self.config["neuroneSortie"])))
+		else:
+			self.lay.append(np.random.uniform(-0.1, 0.1, (self.config["neuroneEntree"], self.config["neuroneSortie"])))
 
 		#on met la constante de momentum à 0.5
 		self.momentum = 0.5
