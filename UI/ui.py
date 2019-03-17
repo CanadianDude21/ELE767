@@ -29,7 +29,7 @@ class ui:
 		#cree les boutons principaux sur l'interface graphique
 		tk.Button(self.wrapper.root, text="Train", command=self.wrapper.train).grid(row=30 ,column=2)
 		tk.Label(self.wrapper.root, anchor='nw',textvariable=self.wrapper.gui_meanPourcentAPP).grid(row=30,column=3,columnspan=3)
-		tk.Button(self.wrapper.root, text="TrainVc", command=self.wrapper.VC).grid(row=31 ,column=2)
+		tk.Button(self.wrapper.root, text="Vc", command=self.wrapper.VC).grid(row=31 ,column=2)
 		tk.Label(self.wrapper.root, anchor='nw',textvariable=self.wrapper.gui_meanPourcentVC).grid(row=31,column=3,columnspan=3)
 		tk.Button(self.wrapper.root, text="generalisation", command=self.wrapper.generalisation).grid(row=32 ,column=2)
 		tk.Label(self.wrapper.root, anchor='nw',textvariable=self.wrapper.gui_meanPourcentTEST).grid(row=32,column=4,columnspan=3)
@@ -41,7 +41,7 @@ class ui:
 
 		#boutons de sauvegarde pour la configuration du reseaux de neurones
 		tk.Button(self.wrapper.root, text="update Current Config", height = 5, width = 20, command=lambda:self.wrapper.updateCurrentConfig(self.configkeys,self.configlist)).grid(columnspan=3,row=33,column=30)
-		tk.Button(self.wrapper.root, text="save Current Config", height = 5, width = 20, command=self.wrapper.save_config).grid(columnspan=3,row=33,column=33)
+		tk.Button(self.wrapper.root, text="Save Config et poid", height = 5, width = 20, command=self.wrapper.save_config).grid(columnspan=3,row=33,column=33)
 
 
 

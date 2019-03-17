@@ -33,16 +33,16 @@ class topWrapper():
 		self.update_config_for_gui(self.config)
 		self.configui = self.config 
 		self.configSortie=fetch.getConfigSortie(self.config["FichierConfigSortie"])
+		self.output = np.asarray(self.configSortie)
 
-		
+
 
 		#dataset
 		self.datasetTrain = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.gui_datasetTrain_path.get())
 		self.datasetVC = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.gui_datasetVC_path.get())
 		self.datasetTest = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.gui_datasetTrain_path.get())
-		
 
-		self.output = np.asarray(self.configSortie)
+
 
 		#timeoutvalue
 		self.timeout=time.time() + 60*5 # 60 secondes fois 5 .... 5 minutes !
@@ -66,20 +66,27 @@ class topWrapper():
 
 	def train(self):
 		self.epoqueNumber =0
-		self.gui_epoqueNumber.set(self.epoqueNumber)
-		self.root.update()
+		self.meanPourcentAPP=0
+		self.meanPourcentVC = 0
+		self.meanPourcentTEST = 0
 
+		self.gui_epoqueNumber.set(self.epoqueNumber)
+		self.gui_meanPourcentAPP.set(self.meanPourcentAPP)
+		self.gui_meanPourcentVC.set(self.meanPourcentVC)
+		self.gui_meanPourcentTEST.set(self.meanPourcentTEST)
+		self.root.update()
+		self.timeout = time.time() + 60 * 5 # 60 secondes fois 5 .... 5 minutes !
 		self.gui_meanPourcentTEST.set(self.epoqueNumber)
 		self.momentum=bool(self.gui_momentum.get())
 
 		print (len(self.datasetTrain[0].data))
 		for nbEpoques in range (int(self.gui_nbrEpoquestr.get())):
 			self.meanPourcentAPP = algo.apprentissage(self.bestReseau,self.datasetTrain,self.output,self.momentum)
-			for x in range (5):
+			for x in range (5): # ce chiffre est  uniquement pour faire un moyenne représentative
 				nbrReussiteVc, totalVC =algo.VC(self.bestReseau,self.datasetVC,self.output)
 				self.totalVC += totalVC
 				self.nbrReussiteVC += nbrReussiteVc
-			for x in range (5):
+			for x in range (5):# ce chiffre est  uniquement pour faire un moyenne représentative
 				nbrReussiteTEST, totalTEST =algo.test(self.bestReseau,self.datasetTest,self.output)
 				self.totalTEST += totalTEST
 				self.nbrReussiteTEST += nbrReussiteTEST
@@ -105,7 +112,16 @@ class topWrapper():
 
 
 	def VC(self):
-		algo.VC(self.bestReseau,self.datasetVC,self.output)
+		for x in range(5):
+			nbrReussiteVC, totalVC = algo.VC(self.bestReseau, self.datasetTest, self.output)
+			self.totalVC += totalVC
+			self.nbrReussiteVC += nbrReussiteVC
+			self.meanPourcentVC = self.nbrReussiteVC / self.totalVC
+			self.gui_meanPourcentVC.set(self.meanPourcentVC)
+			self.root.update()
+			print("meanPourcentVC:" + str(self.meanPourcentVC) + "\n")
+			self.nbrReussiteVC = 0
+			self.totalVC = 0
 
 	def generalisation(self):
 		for x in range(5):
@@ -248,4 +264,8 @@ class topWrapper():
 										 pathToDataSet=self.gui_datasetVC_path.get())
 		self.datasetTest = fetch.getEpoque(nombreTrame=self.config["nbTrames"],
 										   pathToDataSet=self.gui_datasetTrain_path.get())
+
+		self.configSortie = fetch.getConfigSortie(self.config["FichierConfigSortie"])
+		self.output = np.asarray(self.configSortie)
+
 		self.bestReseau = classe.reseaux(self.config)
