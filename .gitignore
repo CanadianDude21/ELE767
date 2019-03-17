@@ -2,7 +2,6 @@
 config/apres/
 config/avant/
 config/test/
-SeqCo*
 .id*
 __pycache__/
 *.py[cod]

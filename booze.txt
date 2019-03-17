@@ -1,4 +1,0 @@
-sup booze
-
-si jamais numpy marche pas
-python -m pip install --user numpy

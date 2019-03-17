@@ -1,2 +1,0 @@
-savoir quel poids mettre pour chaque neurones
-sauvegarde des poids (neuronnes et ?liens?)

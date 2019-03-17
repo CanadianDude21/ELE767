@@ -1,0 +1,8 @@
+nombreCoucheCachees:1
+neuroneEntree:500
+neuroneCacher:100 
+neuroneSortie:10
+nbTrames:60
+tauxApprentissage:0.1
+fonctionActivation:tanh
+FichierConfigSortie:10
