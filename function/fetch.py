@@ -87,12 +87,7 @@ def getConfig(pathToConfig=""):
 				else:
 					print("nope")
 	#l'entree neurone cacher est mise en list puis sauvegarder dans un element du dictionnaire
-	if str(answer["neuroneCacher"]).find(" ")!=-1:
-		answer["neuroneCacher"] = answer["neuroneCacher"].split(" ")
-		for element in range(len(answer["neuroneCacher"])):
-			answer["neuroneCacher"][element] = int(answer["neuroneCacher"][element])
-	else:
-		answer["neuroneCacher"]=[int(answer["neuroneCacher"])]
+	
 	return answer
 
 

@@ -1,0 +1,2 @@
+nbrClasses:10
+nbrPrototype:1040
