@@ -21,8 +21,8 @@ class lvq():
 
 	def train(self):
 
-		#indiceInput = random.randrange(0,len(self.Epoque))
-		indiceInput = 0
+		indiceInput = random.randrange(0,len(self.Epoque))
+		#indiceInput = 0
 		inputChoisie = np.asarray(self.Epoque[indiceInput].data)
 
 		# actualisation
@@ -30,9 +30,9 @@ class lvq():
 		normMinimal = 999999999
 		tempLinRes = 0
 		#trouver le minimum
-		for classIndex,Protoype in zip(range(0,len(self.Classes)),self.Classes):
-			tempLinRes = np.linalg.norm(inputChoisie-Protoype)
-			if normMinimal >  np.linalg.norm(inputChoisie-Protoype):
+		for classIndex,Prototype in zip(range(0,len(self.Classes)),self.Classes):
+			tempLinRes = np.linalg.norm(inputChoisie-Prototype)
+			if normMinimal >  tempLinRes:
 				normMinimal = tempLinRes
 				minimumTrouver = classIndex
 
@@ -46,6 +46,18 @@ class lvq():
 			self.Classes[minimumTrouver] -= self.config["tauxApprentissage"]*(inputChoisie-self.Classes[minimumTrouver])
 					
 
-	#def test(self,donnee):
+	def test(self,donnee):
 
+		donneData = np.asarray(self.donnee.data)
+		for classIndex,Prototype in zip(range(0,len(self.Classes)),self.Classes):
+			tempLinRes = np.linalg.norm(donneData-Prototype)
+			if normMinimal >  tempLinRes:
+				normMinimal = tempLinRes
+				minimumTrouver = classIndex
 
+		if donnee.resultat == minimumTrouver:		
+			print("Même Classe!")
+			return 1
+		else:
+			print("Pas même Classe!")
+			return 0
