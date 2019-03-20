@@ -21,23 +21,32 @@ class lvq():
 
 	def train(self):
 
-		indiceInput = random.randrange(0,len(self.Epoque))
+		#indiceInput = random.randrange(0,len(self.Epoque))
+		indiceInput = 0
 		inputChoisie = np.asarray(self.Epoque[indiceInput].data)
+
 		# actualisation
 		minimumTrouver = 0;
 		normMinimal = 999999999
+		tempLinRes = 0
 		#trouver le minimum
 		for classIndex,Protoype in zip(range(0,len(self.Classes)),self.Classes):
+			tempLinRes = np.linalg.norm(inputChoisie-Protoype)
 			if normMinimal >  np.linalg.norm(inputChoisie-Protoype):
-				normMinimal=np.linalg.norm(inputChoisie-Protoype)
+				normMinimal = tempLinRes
 				minimumTrouver = classIndex
 
+		# correction
+		print(self.Epoque[indiceInput].resultat)
+		print(classIndex)
 		if self.Epoque[indiceInput].resultat == classIndex:
+			self.Classes[classIndex] += self.config["tauxApprentissage"]*(inputChoisie-Protoype)
+			
 
 		else:
+			self.Classes[classIndex] -= self.config["tauxApprentissage"]*(inputChoisie-Protoype)
+					
 
-		# correction
-
-	def test(self,donnee):
+	#def test(self,donnee):
 
 
