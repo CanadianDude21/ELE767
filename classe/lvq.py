@@ -38,13 +38,12 @@ class lvq():
 
 		# correction
 		print(self.Epoque[indiceInput].resultat)
-		print(classIndex)
-		if self.Epoque[indiceInput].resultat == classIndex:
-			self.Classes[classIndex] += self.config["tauxApprentissage"]*(inputChoisie-Protoype)
-			
+		print(minimumTrouver)
+		if self.Epoque[indiceInput].resultat == minimumTrouver:
+			self.Classes[minimumTrouver] += self.config["tauxApprentissage"]*(inputChoisie-self.Classes[minimumTrouver])
 
 		else:
-			self.Classes[classIndex] -= self.config["tauxApprentissage"]*(inputChoisie-Protoype)
+			self.Classes[minimumTrouver] -= self.config["tauxApprentissage"]*(inputChoisie-self.Classes[minimumTrouver])
 					
 
 	#def test(self,donnee):
