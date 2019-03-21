@@ -25,11 +25,10 @@ class lvq():
 		#indiceInput = 0
 		inputChoisie = np.asarray(self.Epoque[indiceInput].data)
 
-		# actualisation
-		minimumTrouver = 0;
-		normMinimal = 999999999
-		tempLinRes = 0
 		#trouver le minimum
+		minimumTrouver = 0;
+		normMinimal =  np.linalg.norm(inputChoisie-self.Classes[0])
+		tempLinRes = 0
 		for classIndex,Prototype in zip(range(0,len(self.Classes)),self.Classes):
 			tempLinRes = np.linalg.norm(inputChoisie-Prototype)
 			if normMinimal >  tempLinRes:
@@ -37,27 +36,37 @@ class lvq():
 				minimumTrouver = classIndex
 
 		# correction
-		print(self.Epoque[indiceInput].resultat)
-		print(minimumTrouver)
+		#print(self.Epoque[indiceInput].resultat)
+		#print(minimumTrouver)
+		#print(normMinimal)
 		if self.Epoque[indiceInput].resultat == minimumTrouver:
-			self.Classes[minimumTrouver] += self.config["tauxApprentissage"]*(inputChoisie-self.Classes[minimumTrouver])
-
+			#print(inputChoisie.shape)
+			self.Classes[minimumTrouver] += (self.config["tauxApprentissage"]*normMinimal)
+			return 1
 		else:
-			self.Classes[minimumTrouver] -= self.config["tauxApprentissage"]*(inputChoisie-self.Classes[minimumTrouver])
-					
+			self.Classes[minimumTrouver] -= (self.config["tauxApprentissage"]*normMinimal)
+			return 0
+		
 
 	def test(self,donnee):
+		
+		donneData = np.asarray(donnee.data)
 
-		donneData = np.asarray(self.donnee.data)
+		minimumTrouver = 0;
+		normMinimal =  np.linalg.norm(donneData-self.Classes[0])
+		tempLinRes = 0
 		for classIndex,Prototype in zip(range(0,len(self.Classes)),self.Classes):
 			tempLinRes = np.linalg.norm(donneData-Prototype)
 			if normMinimal >  tempLinRes:
 				normMinimal = tempLinRes
 				minimumTrouver = classIndex
 
-		if donnee.resultat == minimumTrouver:		
-			print("Même Classe!")
+		if donnee.resultat == minimumTrouver:
+			#print(donnee.resultat)
+			#print(minimumTrouver)
+	
+			#print("Même Classe!")
 			return 1
 		else:
-			print("Pas même Classe!")
+			#print("Pas même Classe!")
 			return 0
