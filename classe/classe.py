@@ -1,7 +1,7 @@
 import numpy as np
 import random
 
-class reseaux():
+class mlp():
 	#constructeur du réseau
 	#on doit lui passer la config
 	def __init__(self,configOriginal):
@@ -99,3 +99,75 @@ class reseaux():
 		self.omegasDeltasPrec = omegasDeltas
 
 		return sortieFuncActivation[-1] #output obtenue
+
+
+
+class lvq():
+
+	def __init__(self,Epoque,config):
+		#valeur des poids initialiser
+
+		self.config = config
+		self.Epoque = Epoque
+		self.Classes = self.initClasses()
+		
+
+	def initClasses(self):
+		classesRef = []
+		for classe in range(self.config["nbrClasses"]):
+			idx, objet = next((idx, obj) for idx, obj in enumerate(self.Epoque) if obj.resultat == classe)
+			classesRef.append(np.asarray(objet.data))
+			del self.Epoque[idx]
+		return classesRef
+
+	def train(self):
+
+		indiceInput = random.randrange(0,len(self.Epoque))
+		#indiceInput = 0
+		inputChoisie = np.asarray(self.Epoque[0].data)
+
+		# actualisation
+		minimumTrouver = 0;
+		normMinimal = np.linalg.norm(inputChoisie-self.Classes[0])
+		tempLinRes = 0
+		#trouver le minimum
+	#	print(self.Classes[2])
+		for classIndex,Prototype in zip(range(0,len(self.Classes)),self.Classes):
+			tempLinRes = np.linalg.norm(inputChoisie-Prototype)
+			if normMinimal >  tempLinRes:
+				normMinimal = tempLinRes
+				minimumTrouver = classIndex
+			#	print("minimumTrouver:"+str(minimumTrouver)+"\n")
+			#	print("normMinimal:"+str(normMinimal)+"\n\n")
+
+
+		# correction
+		#print(inputChoisie)
+		#print(self.Epoque[0].resultat)
+		#print(minimumTrouver)
+
+		#print(self.Classes[minimumTrouver])
+		if self.Epoque[indiceInput].resultat == minimumTrouver:
+			self.Classes[minimumTrouver] += self.config["tauxApprentissage"]*(inputChoisie-self.Classes[minimumTrouver])
+		else:
+			self.Classes[minimumTrouver] -= self.config["tauxApprentissage"]*(inputChoisie-self.Classes[minimumTrouver])
+			
+		#print(self.Classes[minimumTrouver])
+	def test(self,donnee):
+
+		donneData = np.asarray(donnee.data)
+		minimumTrouver = 0;
+		normMinimal = np.linalg.norm(donneData-self.Classes[0])
+		tempLinRes = 0
+		for classIndex,Prototype in zip(range(0,len(self.Classes)),self.Classes):
+			tempLinRes = np.linalg.norm(donneData-Prototype)
+			if normMinimal >  tempLinRes:
+				normMinimal = tempLinRes
+				minimumTrouver = classIndex
+
+		if donnee.resultat == minimumTrouver:		
+			#print("Même Classe!")
+			return 1
+		else:
+			#print("Pas même Classe!")
+			return 0

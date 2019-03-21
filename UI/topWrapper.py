@@ -15,7 +15,7 @@ class topWrapper():
 	def __init__(self):
 		self.root=Tk()
 		self.entrys=[]
-		self.gui_config_path 		= StringVar(value="config/config.txt")
+		self.gui_config_path 		= StringVar(value="config/testconfig.txt")
 		self.gui_datasetTrain_path 	= StringVar(value="DATA/data_train.txt")
 		self.gui_datasetVC_path 	= StringVar(value="DATA/data_vc.txt")
 		self.gui_datasetTest_path 	= StringVar(value="DATA/data_test.txt")
@@ -30,10 +30,9 @@ class topWrapper():
 		self.baseConfigName="SeqConfig/"
 		self.currentConfigPathName=""
 		self.config = fetch.getConfig(pathToConfig=self.gui_config_path.get())
-		self.update_config_for_gui(self.config)
+		#self.update_config_for_gui(self.config)
 		self.configui = self.config 
-		self.configSortie=fetch.getConfigSortie(self.config["FichierConfigSortie"])
-		self.output = np.asarray(self.configSortie)
+		
 
 
 
@@ -60,7 +59,7 @@ class topWrapper():
 		self.momentum 	= False
 		self.epoqueNumber =0
 		#network
-		self.bestReseau = classe.reseaux(self.config)
+		self.bestReseau = classe.lvq(self.datasetTrain,self.config)
 
 	# les fonctions ici sont appeler par les boutons
 
@@ -72,7 +71,6 @@ class topWrapper():
 
 		self.gui_epoqueNumber.set(self.epoqueNumber)
 		self.gui_meanPourcentAPP.set(self.meanPourcentAPP)
-		self.gui_meanPourcentVC.set(self.meanPourcentVC)
 		self.gui_meanPourcentTEST.set(self.meanPourcentTEST)
 		self.root.update()
 		self.timeout = time.time() + 60 * 5 # 60 secondes fois 5 .... 5 minutes !
@@ -81,11 +79,7 @@ class topWrapper():
 
 		print (len(self.datasetTrain[0].data))
 		for nbEpoques in range (int(self.gui_nbrEpoquestr.get())):
-			self.meanPourcentAPP = algo.apprentissage(self.bestReseau,self.datasetTrain,self.output,self.momentum)
-			for x in range (5): # ce chiffre est  uniquement pour faire un moyenne représentative
-				nbrReussiteVc, totalVC =algo.VC(self.bestReseau,self.datasetVC,self.output)
-				self.totalVC += totalVC
-				self.nbrReussiteVC += nbrReussiteVc
+			self.meanPourcentAPP = .apprentissage(self.bestReseau,self.datasetTrain,self.output,self.momentum)
 			for x in range (5):# ce chiffre est  uniquement pour faire un moyenne représentative
 				nbrReussiteTEST, totalTEST =algo.test(self.bestReseau,self.datasetTest,self.output)
 				self.totalTEST += totalTEST
@@ -100,7 +94,6 @@ class topWrapper():
 			self.root.update()
 			print("======== epoqueNumber:" + str(self.epoqueNumber) + "========\n")
 			print("meanPourcentAPP:" + str(self.meanPourcentAPP) + "\n")
-			print("meanPourcentVC:" + str(self.meanPourcentVC) + "\n")
 			print("meanPourcentTEST:" + str(self.meanPourcentTEST) + "\n")
 			self.nbrReussiteVC = 0
 			self.nbrReussiteTEST= 0
@@ -110,30 +103,21 @@ class topWrapper():
 				print("\n\nIt seems stuck let's stop it.\n\n")
 				break
 
-
-	def VC(self):
-		for x in range(5):
-			nbrReussiteVC, totalVC = algo.VC(self.bestReseau, self.datasetTest, self.output)
-			self.totalVC += totalVC
-			self.nbrReussiteVC += nbrReussiteVC
-			self.meanPourcentVC = self.nbrReussiteVC / self.totalVC
-			self.gui_meanPourcentVC.set(self.meanPourcentVC)
-			self.root.update()
-			print("meanPourcentVC:" + str(self.meanPourcentVC) + "\n")
-			self.nbrReussiteVC = 0
-			self.totalVC = 0
+		for nbEpoques in range (int(self.gui_nbrEpoquestr.get())):
+			self.
 
 	def generalisation(self):
-		for x in range(5):
-			nbrReussiteTEST, totalTEST = algo.test(self.bestReseau, self.datasetTest, self.output)
-			self.totalTEST += totalTEST
-			self.nbrReussiteTEST += nbrReussiteTEST
-			self.meanPourcentTEST = self.nbrReussiteTEST / self.totalTEST
-			self.gui_meanPourcentTEST.set(self.meanPourcentTEST)
-			self.root.update()
-			print("meanPourcentTEST:" + str(self.meanPourcentTEST) + "\n")
-			self.nbrReussiteTEST = 0
-			self.totalTEST = 0
+		print(x)
+		# for x in range(5):
+		# 	nbrReussiteTEST, totalTEST = algo.test(self.bestReseau, self.datasetTest, self.output)
+		# 	self.totalTEST += totalTEST
+		# 	self.nbrReussiteTEST += nbrReussiteTEST
+		# 	self.meanPourcentTEST = self.nbrReussiteTEST / self.totalTEST
+		# 	self.gui_meanPourcentTEST.set(self.meanPourcentTEST)
+		# 	self.root.update()
+		# 	print("meanPourcentTEST:" + str(self.meanPourcentTEST) + "\n")
+		# 	self.nbrReussiteTEST = 0
+		# 	self.totalTEST = 0
 	#les fonctions suivantes sont utiliser pour allez chercher des fichiers
 	def browse_load_poids(self):
 		load_poids_path = askdirectory ()
@@ -228,14 +212,16 @@ class topWrapper():
 
 	def update_config_for_gui(self, config):
 
-		if config["fonctionActivation"] == act.sigmoid:
-			config["foncActi"] = act.sigmoid
-			config["fonctionActivation"] = "sigmoid"
-		elif config["fonctionActivation"] == act.tanh:
-			config["fonctionActivation"] = "tanh"
-			config["foncActi"] = act.tanh
-		else:
-			print("nope")
+		if type(self.bestReseau)==type(classe.mlp):
+			if config["fonctionActivation"] == act.sigmoid:
+				config["foncActi"] = act.sigmoid
+				config["fonctionActivation"] = "sigmoid"
+			elif config["fonctionActivation"] == act.tanh:
+				config["fonctionActivation"] = "tanh"
+				config["foncActi"] = act.tanh
+			else:
+				print("nope")
+
 
 	def updateCurrentConfig(self, configkeys, configlist):
 		for keys, conf in zip(configkeys, configlist):
@@ -250,12 +236,13 @@ class topWrapper():
 				else:
 					self.configui[keys] = [int(x) for x in (conf.get()).split(" ") ]
 
-		if self.configui["fonctionActivation"] == "sigmoid":
-			self.configui["foncActi"] = act.sigmoid
-		elif self.configui["fonctionActivation"] == "tanh":
-			self.configui["foncActi"] = act.tanh
-		else:
-			print("nope")
+		if type(self.bestReseau)==type(classe.mlp):
+			if self.configui["fonctionActivation"] == "sigmoid":
+				self.configui["foncActi"] = act.sigmoid
+			elif self.configui["fonctionActivation"] == "tanh":
+				self.configui["foncActi"] = act.tanh
+			else:
+				print("nope")
 
 		self.configui = self.config
 		self.datasetTrain = fetch.getEpoque(nombreTrame=self.config["nbTrames"],
@@ -264,8 +251,4 @@ class topWrapper():
 										 pathToDataSet=self.gui_datasetVC_path.get())
 		self.datasetTest = fetch.getEpoque(nombreTrame=self.config["nbTrames"],
 										   pathToDataSet=self.gui_datasetTrain_path.get())
-
-		self.configSortie = fetch.getConfigSortie(self.config["FichierConfigSortie"])
-		self.output = np.asarray(self.configSortie)
-
-		self.bestReseau = classe.reseaux(self.config)
+		self.bestReseau = classe.lvq(self.datasetTrain,self.config)
