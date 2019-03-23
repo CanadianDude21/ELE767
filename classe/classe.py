@@ -124,7 +124,7 @@ class lvq():
 
 		indiceInput = random.randrange(0,len(self.Epoque))
 		#indiceInput = 0
-		inputChoisie = np.asarray(self.Epoque[0].data)
+		inputChoisie = np.asarray(self.Epoque[indiceInput].data)
 
 		# actualisation
 		minimumTrouver = 0;
@@ -147,10 +147,11 @@ class lvq():
 		#print(minimumTrouver)
 
 		#print(self.Classes[minimumTrouver])
-		if self.Epoque[indiceInput].resultat == minimumTrouver:
-			self.Classes[minimumTrouver] += self.config["tauxApprentissage"]*(inputChoisie-self.Classes[minimumTrouver])
-		else:
-			self.Classes[minimumTrouver] -= self.config["tauxApprentissage"]*(inputChoisie-self.Classes[minimumTrouver])
+		for x in range(len(self.Classes)):
+			if self.Epoque[indiceInput].resultat == minimumTrouver and x == minimumTrouver:
+				self.Classes[minimumTrouver] += self.config["tauxApprentissage"]*(inputChoisie-self.Classes[minimumTrouver])
+			else:
+				self.Classes[x] -= self.config["tauxApprentissage"]*(inputChoisie-self.Classes[x])
 			
 		#print(self.Classes[minimumTrouver])
 	def test(self,donnee):
