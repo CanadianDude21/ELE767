@@ -7,6 +7,7 @@ import fetch, lvq, random
 config = fetch.getConfig("config/testconfig.txt")
 donneTrain = fetch.getEpoque(int(config["nbrPrototype"]/26),"DATA/data_train.txt")
 donneVC = fetch.getEpoque(int(config["nbrPrototype"]/26),"DATA/data_vc.txt")
+donneTest = fetch.getEpoque(int(config["nbrPrototype"]/26),"DATA/data_test.txt")
 
 bestReseau = lvq.lvq(donneTrain,config)
 # j=0
@@ -21,15 +22,21 @@ bestReseau = lvq.lvq(donneTrain,config)
 # 	print(str(result)+"/"+str(len(donneVC)))
 # 	j+=1
 j=0
-while(j<3):
+while(j<1):
 	result = 0
 	for i in range(len(bestReseau.Epoque)):
  		result += bestReseau.train()
-	print("train is done\n {}/{}".format(result, len(bestReseau.Epoque)))
 	j+=1
-
+print("train is done\n {}/{}".format(result, i))
+print(bestReseau.Classes)
 result = 0
 for i in range(len(donneVC)):
 	indiceInput = random.randrange(0,len(donneVC))
 	result += bestReseau.test(donneVC[indiceInput])
-print(str(result)+"/"+str(len(donneVC)))
+print("VC: "+str(result)+"/"+str(len(donneVC)))
+
+result = 0
+for i in range(len(donneTest)):
+	indiceInput = random.randrange(0,len(donneTest))
+	result += bestReseau.test(donneTest[indiceInput])
+print("\nTest: "+str(result)+"/"+str(len(donneTest)))

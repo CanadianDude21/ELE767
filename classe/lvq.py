@@ -21,9 +21,12 @@ class lvq():
 
 	def train(self):
 
-		indiceInput = random.randrange(0,len(self.Epoque))
+		#indiceInput = random.randrange(0,len(self.Epoque))
+		indiceInput = 0
+		#print(indiceInput)
 		#indiceInput = 0
 		inputChoisie = np.asarray(self.Epoque[indiceInput].data)
+		#print(inputChoisie.size)
 
 		#trouver le minimum
 		minimumTrouver = 0;
@@ -40,11 +43,16 @@ class lvq():
 		#print(minimumTrouver)
 		#print(normMinimal)
 		if self.Epoque[indiceInput].resultat == minimumTrouver:
-			#print(inputChoisie.shape)
-			self.Classes[minimumTrouver] += (self.config["tauxApprentissage"]*normMinimal)
+			#print("Pas même classe {}".format(self.Classes[minimumTrouver]))
+			self.Classes[minimumTrouver] += (self.config["tauxApprentissage"]*(inputChoisie-self.Classes[minimumTrouver]))
+			#print(self.Classes[minimumTrouver])
+			del self.Epoque[indiceInput]
 			return 1
 		else:
-			self.Classes[minimumTrouver] -= (self.config["tauxApprentissage"]*normMinimal)
+			#print("Pas même classe {}".format(self.Classes[minimumTrouver]))
+			self.Classes[minimumTrouver] -= (self.config["tauxApprentissage"]*(inputChoisie-self.Classes[minimumTrouver]))
+			#print(self.Classes[minimumTrouver])
+			del self.Epoque[indiceInput]
 			return 0
 		
 
