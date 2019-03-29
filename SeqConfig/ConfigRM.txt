@@ -1,3 +1,0 @@
-1_500_100 10_60_0.1_tanh_10_
-nombreCoucheCachees_neuroneEntree_neuroneCacher_neuroneSortie_nbTrames_tauxApprentissage_fonctionActivation_FichierConfigSortie_
-la postion du premier chiffre correspond a nombreCoucheCachees et ainsi de suite...

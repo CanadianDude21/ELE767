@@ -1,8 +1,8 @@
 
-l'initialisation du réseau
-classe lvq
-algo de train
-algo de generalisation
+#l'initialisation du réseau
+#classe lvq
+#algo de train
+#algo de generalisation
 
 save config
 load config

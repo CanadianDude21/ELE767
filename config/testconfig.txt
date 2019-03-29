@@ -1,3 +1,4 @@
 nbrClasses:10
-nbrPrototype:1040
+RepParClasses:6
+nbTrames:40
 tauxApprentissage:0.1

@@ -1,7 +1,7 @@
 import numpy as np
 import random
 
-class reseaux():
+class mlp():
 	#constructeur du réseau
 	#on doit lui passer la config
 	def __init__(self,configOriginal):
@@ -99,3 +99,82 @@ class reseaux():
 		self.omegasDeltasPrec = omegasDeltas
 
 		return sortieFuncActivation[-1] #output obtenue
+
+
+
+class lvq():
+
+	def __init__(self,Epoque,config):
+		#valeur des poids initialiser
+
+		self.config = config
+		self.Epoque = Epoque
+		self.Classes = self.initClasses()
+
+	def initClasses(self):
+		# Retourne une list comme cela :
+		# 		[  0  1  2    n      ~~~~ nombre de classes
+		# rep 0   [],[],[]...[]
+		# rep 1   [],[],[]...[]
+		#		  .   .  .    .
+		#		  .   .  .    .
+		#		  .   .  .    .
+		#						]
+		classesRef = []
+		for Rep in range(self.config["RepParClasses"]):
+			classesRef.append([])
+			for classe in range(self.config["nbrClasses"]):
+				idx, objet = next((idx, obj) for idx, obj in enumerate(self.Epoque) if obj.resultat == classe)
+				classesRef[Rep].append(np.asarray(objet.data))
+				del self.Epoque[idx]
+		return classesRef
+
+
+
+	def train(self):
+
+		indiceInput = random.randrange(0,len(self.Epoque))
+		#indiceInput = 0
+		inputChoisie = np.asarray(self.Epoque[indiceInput].data)
+
+		# actualisation
+		prototypeIndexTrouver= 0
+		normMinimal = np.linalg.norm(inputChoisie-self.Classes[0][0])
+		repIndexTrouver = 0
+
+		for repIndex,rep in zip(range(len(self.Classes)),self.Classes):
+			for prototypeIndex,prototype in zip((range(len(rep))),rep):
+				tempLinRes = np.linalg.norm(inputChoisie-prototype)
+				if normMinimal >  tempLinRes:
+					normMinimal = tempLinRes # pour prochaines iterations
+					repIndexTrouver = repIndex
+					prototypeIndexTrouver = prototypeIndex
+
+				#	print("minimumTrouver:"+str(minimumTrouver)+"\n")
+				#	print("normMinimal:"+str(normMinimal)+"\n\n")
+
+		if self.Epoque[indiceInput].resultat == prototypeIndexTrouver:
+			self.Classes[repIndexTrouver][prototypeIndexTrouver] += self.config["tauxApprentissage"]*(inputChoisie-self.Classes[repIndexTrouver][prototypeIndexTrouver])
+		else:
+			self.Classes[repIndexTrouver][prototypeIndexTrouver] -= self.config["tauxApprentissage"]*(inputChoisie-self.Classes[repIndexTrouver][prototypeIndexTrouver])
+
+	def test(self,donnee):
+
+		donneData = np.asarray(donnee.data)
+		minimumTrouver = 0;
+		normMinimal = np.linalg.norm(donneData-self.Classes[0][0])
+		tempLinRes = 0
+		for repIndex, rep in zip(range(len(self.Classes)), self.Classes):
+			for prototypeIndex, prototype in zip((range(len(rep))), rep):
+				tempLinRes = np.linalg.norm(donneData - prototype)
+				if normMinimal > tempLinRes:
+					normMinimal = tempLinRes  # pour prochaines iterations
+					repIndexTrouver = repIndex
+					prototypeIndexTrouver = prototypeIndex
+
+		if donnee.resultat == prototypeIndexTrouver:
+			#print("Même Classe!")
+			return 1
+		else:
+			#print("Pas même Classe!")
+			return 0
