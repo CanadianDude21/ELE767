@@ -148,15 +148,16 @@ class lvq():
 		normMinimal = np.linalg.norm(inputChoisie-self.Classes[0][0])
 		classeIndexTrouver = 0
 
+		#utile pour LVQ2
 		prototypeIndexTrouver2 = 0
 		normMinimal2 = np.linalg.norm(inputChoisie-self.Classes[0][0])
 		classeIndexTrouver2 = 0
 
-		for classeIndex, classe in zip(range(len(self.Classes)), self.Classes):
-			for prototypeIndex, prototype in zip((range(len(classe))),classe):
-				tempLinRes = np.linalg.norm(inputChoisie-prototype)
-				if normMinimal > tempLinRes:
-					if lvq2 is True:
+		for classeIndex, classe in zip(range(len(self.Classes)), self.Classes): #pour chaque classe
+			for prototypeIndex, prototype in zip((range(len(classe))),classe): #pour chaque prototype de la classe présente
+				tempLinRes = np.linalg.norm(inputChoisie-prototype) #calcul de distance euclidienne
+				if normMinimal > tempLinRes: #si c'est la plus petite distance
+					if lvq2 is True: #bloc de code qui descend l'ancienne plus petite distance à la deuxième plus petite
 						normMinimal2 = normMinimal
 						classeIndexTrouver2 = classeIndexTrouver
 						prototypeIndexTrouver2 = prototypeIndexTrouver
@@ -165,9 +166,7 @@ class lvq():
 					classeIndexTrouver = classeIndex
 					prototypeIndexTrouver = prototypeIndex
 
-
-				#	print("minimumTrouver:"+str(minimumTrouver)+"\n")
-				#	print("normMinimal:"+str(normMinimal)+"\n\n")
+		# algo de LVQ2
 		if lvq2 is True:
 			if self.Epoque[indiceInput].resultat != prototypeIndexTrouver and self.Epoque[indiceInput].resultat == prototypeIndexTrouver2:
 				if normMinimal/normMinimal2 > 1-self.config["epsilon"] and normMinimal2/normMinimal < 1+self.config["epsilon"]:
@@ -185,6 +184,8 @@ class lvq():
 					return 0
 			else:
 				return 0
+
+		# algo de LVQ
 		else:
 			if self.Epoque[indiceInput].resultat == prototypeIndexTrouver:
 				self.Classes[classeIndexTrouver][prototypeIndexTrouver] += self.config["tauxApprentissage"]*(inputChoisie-self.Classes[classeIndexTrouver][prototypeIndexTrouver])
@@ -209,8 +210,6 @@ class lvq():
 					prototypeIndexTrouver = prototypeIndex
 
 		if donnee.resultat == prototypeIndexTrouver:
-			#print("Même Classe!")
 			return 1
 		else:
-			#print("Pas même Classe!")
 			return 0
