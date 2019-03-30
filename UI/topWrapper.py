@@ -20,7 +20,7 @@ class topWrapper():
 		self.gui_datasetVC_path 	= StringVar(value="DATA/data_vc.txt")
 		self.gui_datasetTest_path 	= StringVar(value="DATA/data_test.txt")
 		self.gui_nbrEpoquestr 		= StringVar(value="0")
-		self.gui_momentum		 	= IntVar()
+		self.gui_lvq2			 	= IntVar()
 		self.gui_meanPourcentAPP 	= DoubleVar()
 		self.gui_meanPourcentVC 	= DoubleVar()
 		self.gui_meanPourcentTEST	= DoubleVar()
@@ -56,7 +56,7 @@ class topWrapper():
 
 		self.totalVC 	= 0
 		self.totalTEST 	= 0
-		self.momentum 	= False
+		#self.momentum 	= False
 		self.epoqueNumber =0
 		#network
 		self.bestReseau = classe.lvq(self.datasetTrain,self.config)
@@ -64,61 +64,65 @@ class topWrapper():
 	# les fonctions ici sont appeler par les boutons
 
 	def train(self):
-		self.epoqueNumber =0
-		self.meanPourcentAPP=0
-		self.meanPourcentVC = 0
-		self.meanPourcentTEST = 0
+		# self.epoqueNumber =0
+		# self.meanPourcentAPP=0
+		# self.meanPourcentVC = 0
+		# self.meanPourcentTEST = 0
+		#
+		# self.gui_epoqueNumber.set(self.epoqueNumber)
+		# self.gui_meanPourcentAPP.set(self.meanPourcentAPP)
+		# self.gui_meanPourcentTEST.set(self.meanPourcentTEST)
+		# self.root.update()
+		# self.timeout = time.time() + 60 * 5 # 60 secondes fois 5 .... 5 minutes !
+		# self.gui_meanPourcentTEST.set(self.epoqueNumber)
+		# self.momentum=bool(self.gui_momentum.get())
+		#
+		# print (len(self.datasetTrain[0].data))
+		# for nbEpoques in range (int(self.gui_nbrEpoquestr.get())):
+		# 	self.meanPourcentAPP = .apprentissage(self.bestReseau,self.datasetTrain,self.output,self.momentum)
+		# 	for x in range (5):# ce chiffre est  uniquement pour faire un moyenne représentative
+		# 		nbrReussiteTEST, totalTEST =algo.test(self.bestReseau,self.datasetTest,self.output)
+		# 		self.totalTEST += totalTEST
+		# 		self.nbrReussiteTEST += nbrReussiteTEST
+		# 	self.meanPourcentVC=self.nbrReussiteVC/self.totalVC
+		# 	self.meanPourcentTEST=self.nbrReussiteTEST/self.totalTEST
+		# 	self.gui_meanPourcentAPP.set(self.meanPourcentAPP)
+		# 	self.gui_meanPourcentVC.set(self.meanPourcentVC)
+		# 	self.gui_meanPourcentTEST.set(self.meanPourcentTEST)
+		# 	self.epoqueNumber += 1
+		# 	self.gui_epoqueNumber.set(self.epoqueNumber)
+		# 	self.root.update()
+		# 	print("======== epoqueNumber:" + str(self.epoqueNumber) + "========\n")
+		# 	print("meanPourcentAPP:" + str(self.meanPourcentAPP) + "\n")
+		# 	print("meanPourcentTEST:" + str(self.meanPourcentTEST) + "\n")
+		# 	self.nbrReussiteVC = 0
+		# 	self.nbrReussiteTEST= 0
+		# 	self.totalVC = 0
+		# 	self.totalTEST = 0
+		# 	if time.time()>self.timeout:
+		# 		print("\n\nIt seems stuck let's stop it.\n\n")
+		# 		break
 
-		self.gui_epoqueNumber.set(self.epoqueNumber)
-		self.gui_meanPourcentAPP.set(self.meanPourcentAPP)
-		self.gui_meanPourcentTEST.set(self.meanPourcentTEST)
-		self.root.update()
-		self.timeout = time.time() + 60 * 5 # 60 secondes fois 5 .... 5 minutes !
-		self.gui_meanPourcentTEST.set(self.epoqueNumber)
-		self.momentum=bool(self.gui_momentum.get())
-
-		print (len(self.datasetTrain[0].data))
+		print(int(self.gui_nbrEpoquestr.get()))
 		for nbEpoques in range (int(self.gui_nbrEpoquestr.get())):
-			self.meanPourcentAPP = .apprentissage(self.bestReseau,self.datasetTrain,self.output,self.momentum)
-			for x in range (5):# ce chiffre est  uniquement pour faire un moyenne représentative
-				nbrReussiteTEST, totalTEST =algo.test(self.bestReseau,self.datasetTest,self.output)
-				self.totalTEST += totalTEST
-				self.nbrReussiteTEST += nbrReussiteTEST
-			self.meanPourcentVC=self.nbrReussiteVC/self.totalVC
-			self.meanPourcentTEST=self.nbrReussiteTEST/self.totalTEST
-			self.gui_meanPourcentAPP.set(self.meanPourcentAPP)
-			self.gui_meanPourcentVC.set(self.meanPourcentVC)
-			self.gui_meanPourcentTEST.set(self.meanPourcentTEST)
+			for x in  range(len(self.datasetTrain)):
+				self.meanPourcentAPP += self.bestReseau.train(bool(self.gui_lvq2.get()))
+			self.meanPourcentAPP = self.meanPourcentAPP / len(self.datasetTrain)
 			self.epoqueNumber += 1
-			self.gui_epoqueNumber.set(self.epoqueNumber)
-			self.root.update()
-			print("======== epoqueNumber:" + str(self.epoqueNumber) + "========\n")
-			print("meanPourcentAPP:" + str(self.meanPourcentAPP) + "\n")
-			print("meanPourcentTEST:" + str(self.meanPourcentTEST) + "\n")
-			self.nbrReussiteVC = 0
-			self.nbrReussiteTEST= 0
-			self.totalVC = 0
-			self.totalTEST = 0
-			if time.time()>self.timeout:
+			if time.time() > self.timeout:
 				print("\n\nIt seems stuck let's stop it.\n\n")
 				break
-
-		for nbEpoques in range (int(self.gui_nbrEpoquestr.get())):
-			self.
+			self.gui_epoqueNumber.set(self.epoqueNumber)
+			self.root.update()
 
 	def generalisation(self):
-		print(x)
-		# for x in range(5):
-		# 	nbrReussiteTEST, totalTEST = algo.test(self.bestReseau, self.datasetTest, self.output)
-		# 	self.totalTEST += totalTEST
-		# 	self.nbrReussiteTEST += nbrReussiteTEST
-		# 	self.meanPourcentTEST = self.nbrReussiteTEST / self.totalTEST
-		# 	self.gui_meanPourcentTEST.set(self.meanPourcentTEST)
-		# 	self.root.update()
-		# 	print("meanPourcentTEST:" + str(self.meanPourcentTEST) + "\n")
-		# 	self.nbrReussiteTEST = 0
-		# 	self.totalTEST = 0
-	#les fonctions suivantes sont utiliser pour allez chercher des fichiers
+		for x in range(len(self.datasetVC)):
+			self.meanPourcentVC += self.bestReseau.test(self.datasetVC[x])
+		self.meanPourcentVC = self.meanPourcentVC / len(self.datasetVC)
+		self.gui_meanPourcentAPP.set(self.meanPourcentVC)
+		self.root.update()
+
+
 	def browse_load_poids(self):
 		load_poids_path = askdirectory ()
 		configPoids.chargerPoids(self.bestReseau,load_poids_path)
@@ -147,7 +151,7 @@ class topWrapper():
 		self.datasetTrain = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.gui_datasetTrain_path.get())
 		self.datasetVC = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.gui_datasetVC_path.get())
 		self.datasetTest = fetch.getEpoque(nombreTrame=self.config["nbTrames"],pathToDataSet=self.gui_datasetTrain_path.get())
-		self.bestReseau = classe.reseaux(self.config)
+		self.bestReseau = classe.lvq(self.datasetTrain,self.config)
 		
 
 	#fonctions de sauvegarde de la config entree par lutilisateur

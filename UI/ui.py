@@ -34,7 +34,7 @@ class ui:
 		tk.Button(self.wrapper.root, text="Quit", command=self.wrapper.root.destroy).grid(row=33 ,column=2)
 
 
-		tk.Checkbutton(self.wrapper.root, text="Momentum", variable=self.wrapper.gui_momentum).grid(row=30, column=1)
+		tk.Checkbutton(self.wrapper.root, text="gui_lvq2", variable=self.wrapper.gui_lvq2).grid(row=30, column=1)
 
 
 		#boutons de sauvegarde pour la configuration du reseaux de neurones

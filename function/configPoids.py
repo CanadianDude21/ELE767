@@ -18,15 +18,14 @@ def sauvegardePoids(reseau,path):
 					j+=1
 			outfile.close()
 	else:
-		print("we in boys")
 		data = np.asarray(reseau.Classes)
 		# Write the array to disk
 		with open(path+"/configPoidsLayer.txt", 'w') as outfile:
-			outfile.write('# Poids couche 1: {0}\n#Donnée 1\n'.format(data.shape))
+			outfile.write('# Nombre de Représentent: {0}, nombre de classe {1}, nombre de donne en entree {2}\n#Donnée 1\n'.format(data.shape[0],data.shape[1],data.shape[2]))
 			j = 2
 			for data_slice in data:
 				np.savetxt(outfile, data_slice, fmt='%-7.10f')
-				outfile.write('# Donnée {}\n'.format(j))
+				outfile.write('# Représentent {}\n'.format(j))
 				j+=1
 		outfile.close()
 

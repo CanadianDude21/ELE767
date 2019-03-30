@@ -19,9 +19,11 @@ bestReseau = classe.lvq(donne,config,DVQ=True)
 for x in range(len(donne)):
 	bestReseau.train(True)
 
+
 # for y in range(len(donneVC)):
 # 	#for y in range(len(donneVC[x].data)):
 # 		accVC += bestReseau.test(donneVC[y])
+
 
 # for z in range(len(donneTest)):
 # 	#for y in range(len(donneVC[x].data)):
