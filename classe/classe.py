@@ -174,11 +174,15 @@ class lvq():
 					self.Classes[classeIndexTrouver][prototypeIndexTrouver] -= self.config["tauxApprentissage"] * (inputChoisie - self.Classes[classeIndexTrouver][prototypeIndexTrouver])
 					self.Classes[classeIndexTrouver2][prototypeIndexTrouver2] += self.config["tauxApprentissage"] * (inputChoisie - self.Classes[classeIndexTrouver2][prototypeIndexTrouver2])
 					return 1
+				else:
+					return 0
 			elif self.Epoque[indiceInput].resultat != prototypeIndexTrouver2 and self.Epoque[indiceInput].resultat == prototypeIndexTrouver:
 				if normMinimal2 / normMinimal > 1 - self.config["epsilon"] and normMinimal / normMinimal2 < 1 +self.config["epsilon"]:
 					self.Classes[classeIndexTrouver][prototypeIndexTrouver] += self.config["tauxApprentissage"] * (inputChoisie - self.Classes[classeIndexTrouver][prototypeIndexTrouver])
 					self.Classes[classeIndexTrouver2][prototypeIndexTrouver2] -= self.config["tauxApprentissage"] * (inputChoisie - self.Classes[classeIndexTrouver2][prototypeIndexTrouver2])
 					return 1
+				else:
+					return 0
 			else:
 				return 0
 		else:
