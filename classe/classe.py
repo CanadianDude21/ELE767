@@ -104,7 +104,7 @@ class mlp():
 
 class lvq():
 
-	def __init__(self,Epoque,config,DVQ=False):
+	def __init__(self,Epoque, config, DVQ = False):
 		#valeur des poids initialiser
 
 		self.config = config
@@ -138,10 +138,9 @@ class lvq():
 
 
 
-	def train(self):
+	def train(self, lvq2 = False):
 
-		indiceInput = random.randrange(0,len(self.Epoque))
-		#indiceInput = 0
+		indiceInput = random.randrange(0, len(self.Epoque))
 		inputChoisie = np.asarray(self.Epoque[indiceInput].data)
 
 		# actualisation
@@ -149,22 +148,40 @@ class lvq():
 		normMinimal = np.linalg.norm(inputChoisie-self.Classes[0][0])
 		repIndexTrouver = 0
 
-		for repIndex,rep in zip(range(len(self.Classes)),self.Classes):
-			for prototypeIndex,prototype in zip((range(len(rep))),rep):
+		prototypeIndexTrouver2 = 0
+		normMinimal2 = np.linalg.norm(inputChoisie-self.Classes[0][0])
+		repIndexTrouver2 = 0
+
+		for repIndex, rep in zip(range(len(self.Classes)),self.Classes):
+			for prototypeIndex, prototype in zip((range(len(rep))),rep):
 				tempLinRes = np.linalg.norm(inputChoisie-prototype)
-				if normMinimal >  tempLinRes:
-					normMinimal = tempLinRes # pour prochaines iterations
+				if normMinimal > tempLinRes:
+					if lvq2 is True:
+						normMinimal2 = normMinimal
+						repIndexTrouver2 = repIndexTrouver
+						prototypeIndexTrouver2 = prototypeIndexTrouver
+
+					normMinimal = tempLinRes  # pour prochaines iterations
 					repIndexTrouver = repIndex
 					prototypeIndexTrouver = prototypeIndex
 
+
 				#	print("minimumTrouver:"+str(minimumTrouver)+"\n")
 				#	print("normMinimal:"+str(normMinimal)+"\n\n")
-
-		if self.Epoque[indiceInput].resultat == prototypeIndexTrouver:
-			self.Classes[repIndexTrouver][prototypeIndexTrouver] += self.config["tauxApprentissage"]*(inputChoisie-self.Classes[repIndexTrouver][prototypeIndexTrouver])
+		if lvq2 is True:
+			if self.Epoque[indiceInput].resultat != prototypeIndexTrouver and self.Epoque[indiceInput].resultat == prototypeIndexTrouver:
+				if normMinimal/normMinimal2 > 1-self.config["epsilon"] and normMinimal2/normMinimal < 1+self.config["epsilon"]:
+					self.Classes[repIndexTrouver][prototypeIndexTrouver] -= self.config["tauxApprentissage"] * (inputChoisie - self.Classes[repIndexTrouver][prototypeIndexTrouver])
+					self.Classes[repIndexTrouver2][prototypeIndexTrouver2] += self.config["tauxApprentissage"] * (inputChoisie - self.Classes[repIndexTrouver2][prototypeIndexTrouver2])
 		else:
-			self.Classes[repIndexTrouver][prototypeIndexTrouver] -= self.config["tauxApprentissage"]*(inputChoisie-self.Classes[repIndexTrouver][prototypeIndexTrouver])
-		return normMinimal 
+			if self.Epoque[indiceInput].resultat == prototypeIndexTrouver:
+				self.Classes[repIndexTrouver][prototypeIndexTrouver] += self.config["tauxApprentissage"]*(inputChoisie-self.Classes[repIndexTrouver][prototypeIndexTrouver])
+				return 1
+			else:
+				self.Classes[repIndexTrouver][prototypeIndexTrouver] -= self.config["tauxApprentissage"]*(inputChoisie-self.Classes[repIndexTrouver][prototypeIndexTrouver])
+				return 0
+
+
 	def test(self,donnee):
 
 		donneData = np.asarray(donnee.data)
