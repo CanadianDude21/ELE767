@@ -15,13 +15,10 @@ bestReseau = classe.lvq(donne,config,DVQ=True)
 
 # accVC=0
 # acc = 0
-counter = 0
+
 for x in range(len(donne)):
-	dist = bestReseau.train()
-	if counter > 25:
-		print(dist)
-		counter = 0
-	counter+=1
+	bestReseau.train(True)
+
 # for y in range(len(donneVC)):
 # 	#for y in range(len(donneVC[x].data)):
 # 		accVC += bestReseau.test(donneVC[y])
