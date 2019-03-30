@@ -104,12 +104,19 @@ class mlp():
 
 class lvq():
 
-	def __init__(self,Epoque,config):
+	def __init__(self,Epoque,config,DVQ=False):
 		#valeur des poids initialiser
 
 		self.config = config
 		self.Epoque = Epoque
 		self.Classes = self.initClasses()
+		if DVQ is True:
+			self.varClasses = []
+			self.stdClasses = []
+			for classe in self.Classes:
+				self.stdClasses.append(np.std(classe))
+				self.varClasses.append(np.var(classe))
+			self.seuilVar = 11*min(self.varClasses)
 
 	def initClasses(self):
 		# Retourne une list comme cela :
@@ -157,7 +164,7 @@ class lvq():
 			self.Classes[repIndexTrouver][prototypeIndexTrouver] += self.config["tauxApprentissage"]*(inputChoisie-self.Classes[repIndexTrouver][prototypeIndexTrouver])
 		else:
 			self.Classes[repIndexTrouver][prototypeIndexTrouver] -= self.config["tauxApprentissage"]*(inputChoisie-self.Classes[repIndexTrouver][prototypeIndexTrouver])
-
+		return normMinimal 
 	def test(self,donnee):
 
 		donneData = np.asarray(donnee.data)
