@@ -12,7 +12,7 @@ donneVC = fetch.getEpoque(int(config["nbTrames"]),"DATA/data_vc.txt")
 bestReseau = classe.lvq(donne,config)
 acc=0
 
-for x in range(0,2*len(donne)):
+for x in range(2*len(donne)):
 	bestReseau.train()
 
 for x in range(len(donneVC)):
