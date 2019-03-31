@@ -15,7 +15,7 @@ class topWrapper():
 	def __init__(self):
 		self.root=Tk()
 		self.entrys=[]
-		self.gui_config_path 		= StringVar(value="config/testconfig.txt")
+		self.gui_config_path 		= StringVar(value="config/config.txt")
 		self.gui_datasetTrain_path 	= StringVar(value="DATA/data_train.txt")
 		self.gui_datasetVC_path 	= StringVar(value="DATA/data_vc.txt")
 		self.gui_datasetTest_path 	= StringVar(value="DATA/data_test.txt")
@@ -64,46 +64,9 @@ class topWrapper():
 	# les fonctions ici sont appeler par les boutons
 
 	def train(self):
-		# self.epoqueNumber =0
-		# self.meanPourcentAPP=0
-		# self.meanPourcentVC = 0
-		# self.meanPourcentTEST = 0
-		#
-		# self.gui_epoqueNumber.set(self.epoqueNumber)
-		# self.gui_meanPourcentAPP.set(self.meanPourcentAPP)
-		# self.gui_meanPourcentTEST.set(self.meanPourcentTEST)
-		# self.root.update()
-		# self.timeout = time.time() + 60 * 5 # 60 secondes fois 5 .... 5 minutes !
-		# self.gui_meanPourcentTEST.set(self.epoqueNumber)
-		# self.momentum=bool(self.gui_momentum.get())
-		#
-		# print (len(self.datasetTrain[0].data))
-		# for nbEpoques in range (int(self.gui_nbrEpoquestr.get())):
-		# 	self.meanPourcentAPP = .apprentissage(self.bestReseau,self.datasetTrain,self.output,self.momentum)
-		# 	for x in range (5):# ce chiffre est  uniquement pour faire un moyenne représentative
-		# 		nbrReussiteTEST, totalTEST =algo.test(self.bestReseau,self.datasetTest,self.output)
-		# 		self.totalTEST += totalTEST
-		# 		self.nbrReussiteTEST += nbrReussiteTEST
-		# 	self.meanPourcentVC=self.nbrReussiteVC/self.totalVC
-		# 	self.meanPourcentTEST=self.nbrReussiteTEST/self.totalTEST
-		# 	self.gui_meanPourcentAPP.set(self.meanPourcentAPP)
-		# 	self.gui_meanPourcentVC.set(self.meanPourcentVC)
-		# 	self.gui_meanPourcentTEST.set(self.meanPourcentTEST)
-		# 	self.epoqueNumber += 1
-		# 	self.gui_epoqueNumber.set(self.epoqueNumber)
-		# 	self.root.update()
-		# 	print("======== epoqueNumber:" + str(self.epoqueNumber) + "========\n")
-		# 	print("meanPourcentAPP:" + str(self.meanPourcentAPP) + "\n")
-		# 	print("meanPourcentTEST:" + str(self.meanPourcentTEST) + "\n")
-		# 	self.nbrReussiteVC = 0
-		# 	self.nbrReussiteTEST= 0
-		# 	self.totalVC = 0
-		# 	self.totalTEST = 0
-		# 	if time.time()>self.timeout:
-		# 		print("\n\nIt seems stuck let's stop it.\n\n")
-		# 		break
 
-		print(int(self.gui_nbrEpoquestr.get()))
+
+		self.timeout = time.time() + 60 * 5 # 60 secondes fois 5 .... 5 minutes !
 		for nbEpoques in range (int(self.gui_nbrEpoquestr.get())):
 			for x in  range(len(self.datasetTrain)):
 				self.meanPourcentAPP += self.bestReseau.train(bool(self.gui_lvq2.get()))
@@ -113,15 +76,17 @@ class topWrapper():
 				print("\n\nIt seems stuck let's stop it.\n\n")
 				break
 			self.gui_epoqueNumber.set(self.epoqueNumber)
+			self.gui_meanPourcentAPP.set(self.meanPourcentAPP)
 			self.root.update()
+			self.meanPourcentAPP = 0
 
 	def generalisation(self):
 		for x in range(len(self.datasetVC)):
 			self.meanPourcentVC += self.bestReseau.test(self.datasetVC[x])
 		self.meanPourcentVC = self.meanPourcentVC / len(self.datasetVC)
-		self.gui_meanPourcentAPP.set(self.meanPourcentVC)
+		self.gui_meanPourcentVC.set(self.meanPourcentVC)
 		self.root.update()
-
+		self.meanPourcentVC = 0
 
 	def browse_load_poids(self):
 		load_poids_path = askdirectory ()
@@ -256,3 +221,12 @@ class topWrapper():
 		self.datasetTest = fetch.getEpoque(nombreTrame=self.config["nbTrames"],
 										   pathToDataSet=self.gui_datasetTrain_path.get())
 		self.bestReseau = classe.lvq(self.datasetTrain,self.config)
+		self.meanPourcentAPP = 0
+		self.meanPourcentVC = 0
+		self.meanPourcentTEST= 0
+		self.epoqueNumber = 0
+		self.gui_epoqueNumber.set(self.epoqueNumber)
+		self.gui_meanPourcentAPP.set(self.meanPourcentAPP)
+		self.gui_meanPourcentTEST.set(self.meanPourcentTEST)
+		self.gui_meanPourcentVC.set(self.meanPourcentVC)
+		self.root.update()

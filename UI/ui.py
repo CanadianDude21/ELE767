@@ -30,7 +30,7 @@ class ui:
 		tk.Button(self.wrapper.root, text="Train", command=self.wrapper.train).grid(row=30 ,column=2)
 		tk.Label(self.wrapper.root, anchor='nw',textvariable=self.wrapper.gui_meanPourcentAPP).grid(row=30,column=3,columnspan=3)
 		tk.Button(self.wrapper.root, text="generalisation", command=self.wrapper.generalisation).grid(row=32 ,column=2)
-		tk.Label(self.wrapper.root, anchor='nw',textvariable=self.wrapper.gui_meanPourcentTEST).grid(row=32,column=4,columnspan=3)
+		tk.Label(self.wrapper.root, anchor='nw',textvariable=self.wrapper.gui_meanPourcentVC).grid(row=32,column=4,columnspan=3)
 		tk.Button(self.wrapper.root, text="Quit", command=self.wrapper.root.destroy).grid(row=33 ,column=2)
 
 
@@ -68,7 +68,7 @@ class ui:
 		filemenu.add_command(label="load dataset Train", command=self.wrapper.browse_datasetTrain_path)
 		filemenu.add_command(label="load dataset VC", command=self.wrapper.browse_datasetVC_path)
 		filemenu.add_command(label="load dataset Test", command=self.wrapper.browse_datasetTest_path)
-		filemenu.add_command(label="load poids neurones", command=self.wrapper.browse_load_poids)
+		filemenu.add_command(label="load poids", command=self.wrapper.browse_load_poids)
 		filemenu.add_command(label="Open config", command=self.wrapper.browse_config)
 		filemenu.add_separator()
 		filemenu.add_command(label="Exit", command=self.wrapper.root.quit)

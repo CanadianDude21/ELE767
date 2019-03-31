@@ -201,6 +201,7 @@ class lvq():
 		minimumTrouver = 0;
 		normMinimal = np.linalg.norm(donneData-self.Classes[0][0])
 		tempLinRes = 0
+		prototypeIndexTrouver=0
 		for repIndex, rep in zip(range(len(self.Classes)), self.Classes):
 			for prototypeIndex, prototype in zip((range(len(rep))), rep):
 				tempLinRes = np.linalg.norm(donneData - prototype)
