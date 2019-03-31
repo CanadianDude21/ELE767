@@ -1,0 +1,5 @@
+nbrClasses:10
+RepParClasses:10
+nbTrames:60
+tauxApprentissage:0.11
+epsilon:0.2

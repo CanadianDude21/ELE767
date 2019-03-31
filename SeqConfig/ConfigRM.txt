@@ -1,0 +1,3 @@
+10_10_60_0.11_0.2_
+nbrClasses_RepParClasses_nbTrames_tauxApprentissage_epsilon_
+la postion du premier chiffre correspond a nombreCoucheCachees et ainsi de suite...
