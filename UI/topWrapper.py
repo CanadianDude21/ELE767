@@ -81,6 +81,15 @@ class topWrapper():
 			self.meanPourcentAPP = 0
 
 	def generalisation(self):
+		for x in range(len(self.datasetTest)):
+			self.meanPourcentTEST += self.bestReseau.test(self.datasetTest[x])
+		self.meanPourcentTEST = self.meanPourcentTEST / len(self.datasetTest)
+		self.gui_meanPourcentTEST.set(self.meanPourcentTEST)
+		self.root.update()
+		self.meanPourcentTEST = 0
+
+
+	def vc(self):
 		for x in range(len(self.datasetVC)):
 			self.meanPourcentVC += self.bestReseau.test(self.datasetVC[x])
 		self.meanPourcentVC = self.meanPourcentVC / len(self.datasetVC)

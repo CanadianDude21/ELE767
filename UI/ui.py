@@ -29,8 +29,11 @@ class ui:
 		#cree les boutons principaux sur l'interface graphique
 		tk.Button(self.wrapper.root, text="Train", command=self.wrapper.train).grid(row=30 ,column=2)
 		tk.Label(self.wrapper.root, anchor='nw',textvariable=self.wrapper.gui_meanPourcentAPP).grid(row=30,column=3,columnspan=3)
+		tk.Button(self.wrapper.root, text="VC", command=self.wrapper.vc).grid(row=31, column=2)
+		tk.Label(self.wrapper.root, anchor='nw', textvariable=self.wrapper.gui_meanPourcentVC).grid(row=31, column=3,
+																									 columnspan=3)
 		tk.Button(self.wrapper.root, text="generalisation", command=self.wrapper.generalisation).grid(row=32 ,column=2)
-		tk.Label(self.wrapper.root, anchor='nw',textvariable=self.wrapper.gui_meanPourcentVC).grid(row=32,column=4,columnspan=3)
+		tk.Label(self.wrapper.root, anchor='nw',textvariable=self.wrapper.gui_meanPourcentTEST).grid(row=32,column=4,columnspan=3)
 		tk.Button(self.wrapper.root, text="Quit", command=self.wrapper.root.destroy).grid(row=33 ,column=2)
 
 
